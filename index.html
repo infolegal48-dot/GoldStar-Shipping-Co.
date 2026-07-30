@@ -3,1217 +3,886 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Meridian Freight — Track, Ship, Manage</title>
+<title>Meridian Vault Freight</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --navy-950:#081B33;
-    --navy-900:#0B2545;
-    --navy-800:#13345F;
-    --navy-100:#E7ECF3;
-    --ink:#1E293B;
-    --ink-soft:#5B6B82;
-    --paper:#F6F8FB;
-    --paper-raised:#FFFFFF;
-    --line:#DDE4ED;
-    --amber:#F5821F;
-    --amber-dark:#D96C0E;
-    --emerald:#0E9F6E;
-    --emerald-soft:#E4F7EF;
-    --rose:#E1443A;
-    --rose-soft:#FBEAE9;
-    --radius:10px;
-    --shadow-sm:0 1px 2px rgba(11,37,69,0.06), 0 1px 1px rgba(11,37,69,0.04);
-    --shadow-md:0 8px 24px rgba(11,37,69,0.10);
-    --shadow-lg:0 20px 48px rgba(11,37,69,0.16);
+    --ivory: #F2F5F0;
+    --ivory-deep: #E9EEE6;
+    --emerald: #0B4B3E;
+    --emerald-deep: #073229;
+    --gold: #A87F2E;
+    --gold-soft: #D8C08B;
+    --sapphire: #1B3A6B;
+    --ink: #1E2420;
+    --ink-soft: #4B564F;
+    --line: rgba(11,75,62,0.16);
+    --white: #FFFFFF;
+    --error: #A23A2F;
   }
+
   *{box-sizing:border-box;}
-  html{scroll-behavior:smooth;}
+  html,body{margin:0;padding:0;}
   body{
-    margin:0;
-    background:var(--paper);
-    color:var(--ink);
-    font-family:'Inter',sans-serif;
-    font-size:15.5px;
-    line-height:1.55;
-    -webkit-font-smoothing:antialiased;
+    background: var(--ivory);
+    color: var(--ink);
+    font-family:'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    min-height:100vh;
   }
-  h1,h2,h3,h4{
-    font-family:'Space Grotesk',sans-serif;
-    color:var(--navy-900);
+  h1,h2,h3{
+    font-family:'Fraunces', serif;
+    font-weight:600;
     margin:0;
-    letter-spacing:-0.01em;
+    color: var(--emerald-deep);
   }
-  .mono{font-family:'IBM Plex Mono',monospace;}
+  .mono{
+    font-family:'JetBrains Mono', monospace;
+  }
   a{color:inherit;}
-  button{font-family:inherit;cursor:pointer;}
-  img{max-width:100%;}
-  :focus-visible{outline:2.5px solid var(--amber);outline-offset:2px;}
+  button{font-family:inherit;}
 
-  /* ---------- layout shells ---------- */
-  .wrap{max-width:1140px;margin:0 auto;padding:0 28px;}
-  .view{display:none;}
-  .view.active{display:block;}
-  section{padding:72px 0;}
-  .section-tight{padding:48px 0;}
-
-  /* ---------- top bar (system status) ---------- */
-  .demo-banner{
-    background:var(--navy-950);
-    color:#CFE0F7;
-    font-size:12.5px;
-    text-align:center;
-    padding:7px 16px;
-    letter-spacing:.01em;
+  /* ---------- NAV ---------- */
+  .nav{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding: 22px 48px;
+    border-bottom: 1px solid var(--line);
+    position:sticky;
+    top:0;
+    background: rgba(242,245,240,0.92);
+    backdrop-filter: blur(6px);
+    z-index: 50;
   }
-  .demo-banner b{color:#fff;}
-
-  /* ---------- nav ---------- */
-  header.nav{
-    background:var(--paper-raised);
-    border-bottom:1px solid var(--line);
-    position:sticky;top:0;z-index:50;
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:20px;
+    letter-spacing:0.2px;
+    color: var(--emerald-deep);
+    cursor:pointer;
   }
-  .nav-inner{
-    max-width:1140px;margin:0 auto;padding:0 28px;
-    display:flex;align-items:center;justify-content:space-between;
-    height:68px;
+  .brand-mark{
+    width:26px; height:26px;
+    flex-shrink:0;
   }
-  .logo{
-    display:flex;align-items:center;gap:10px;
-    font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:19px;
-    color:var(--navy-900);
-    background:none;border:none;padding:0;
+  .nav-links{
+    display:flex;
+    align-items:center;
+    gap:28px;
+    font-size:14.5px;
+    font-weight:500;
+    color: var(--ink-soft);
   }
-  .logo-mark{
-    width:30px;height:30px;border-radius:8px;
-    background:linear-gradient(135deg,var(--navy-900),var(--navy-800));
-    display:flex;align-items:center;justify-content:center;flex-shrink:0;
-  }
-  .logo-mark svg{width:17px;height:17px;}
-  .nav-links{display:flex;align-items:center;gap:6px;}
-  .nav-btn{
-    background:none;border:none;color:var(--ink-soft);font-weight:600;
-    font-size:14.5px;padding:9px 14px;border-radius:8px;transition:.15s;
-  }
-  .nav-btn:hover{color:var(--navy-900);background:var(--navy-100);}
-  .nav-btn.current{color:var(--navy-900);background:var(--navy-100);}
+  .nav-links span{cursor:pointer; transition: color .15s ease;}
+  .nav-links span:hover{color:var(--emerald);}
   .nav-cta{
-    background:var(--navy-900);color:#fff;border:none;
-    font-weight:600;font-size:14.5px;padding:10px 18px;border-radius:8px;
-    transition:.15s;
+    padding:10px 20px;
+    border-radius:2px;
+    background: var(--emerald);
+    color: var(--ivory);
+    font-size:14px;
+    font-weight:500;
+    cursor:pointer;
+    border: 1px solid var(--emerald);
+    transition: background .15s ease;
   }
-  .nav-cta:hover{background:var(--navy-800);}
-  .nav-ghost{
-    background:none;border:1.5px solid var(--line);color:var(--navy-900);
-    font-weight:600;font-size:14.5px;padding:9px 16px;border-radius:8px;
+  .nav-cta:hover{background:var(--emerald-deep);}
+  .nav-cta.ghost{
+    background:transparent;
+    color:var(--emerald);
   }
-  .nav-ghost:hover{border-color:var(--navy-900);}
-  .nav-user-chip{
-    display:flex;align-items:center;gap:9px;background:var(--navy-100);
-    padding:6px 14px 6px 6px;border-radius:30px;
-  }
-  .nav-user-chip .avatar{
-    width:26px;height:26px;border-radius:50%;background:var(--amber);
-    color:#fff;font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center;
-  }
-  .nav-user-chip span{font-size:13.5px;font-weight:600;color:var(--navy-900);}
-  .nav-user-chip button{background:none;border:none;color:var(--ink-soft);font-size:12.5px;text-decoration:underline;font-weight:500;}
-  @media(max-width:760px){
-    .nav-links .nav-btn.hide-mobile{display:none;}
-  }
+  .nav-cta.ghost:hover{background: var(--ivory-deep);}
 
-  /* ---------- hero + tracking box ---------- */
+  /* ---------- PAGE CONTAINER ---------- */
+  .page{display:none;}
+  .page.active{display:block;}
+
+  /* ---------- HERO ---------- */
   .hero{
-    background:
-      radial-gradient(1100px 420px at 85% -10%, rgba(245,130,31,0.10), transparent 60%),
-      linear-gradient(180deg,var(--navy-950) 0%, var(--navy-900) 62%, var(--navy-800) 100%);
-    color:#fff;padding:76px 0 96px;position:relative;overflow:hidden;
+    position:relative;
+    display:grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    align-items:center;
+    gap:40px;
+    padding: 88px 48px 96px;
+    overflow:hidden;
   }
-  .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:52px;align-items:center;}
-  @media(max-width:900px){.hero-grid{grid-template-columns:1fr;} .hero{padding:52px 0 64px;}}
-  .eyebrow{
-    display:inline-flex;align-items:center;gap:8px;
-    font-size:12.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
-    color:#B9C9E4;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.14);
-    padding:6px 12px;border-radius:20px;margin-bottom:22px;
+  .hero-eyebrow{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    font-size:12.5px;
+    letter-spacing:2.2px;
+    text-transform:uppercase;
+    color: var(--gold);
+    font-weight:600;
+    margin-bottom:22px;
   }
-  .eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--amber);}
-  .hero h1{color:#fff;font-size:44px;line-height:1.12;font-weight:700;max-width:560px;}
-  .hero p.lead{color:#C9D6EA;font-size:16.5px;max-width:480px;margin-top:16px;}
-  .hero-stats{display:flex;gap:32px;margin-top:34px;}
-  .hero-stats div b{display:block;font-family:'Space Grotesk',sans-serif;font-size:23px;color:#fff;}
-  .hero-stats div span{font-size:12.5px;color:#9FB1CE;}
-
-  .track-card{
-    background:var(--paper-raised);border-radius:16px;box-shadow:var(--shadow-lg);
-    padding:28px;color:var(--ink);
+  .hero-eyebrow::before{
+    content:"";
+    width:22px; height:1px;
+    background: var(--gold);
+    display:inline-block;
   }
-  .track-card h3{font-size:18px;}
-  .track-card .sub{color:var(--ink-soft);font-size:13.5px;margin-top:4px;}
-  .track-form{display:flex;gap:8px;margin-top:20px;}
-  .track-form input{
-    flex:1;padding:13px 14px;border:1.5px solid var(--line);border-radius:9px;
-    font-family:'IBM Plex Mono',monospace;font-size:14.5px;letter-spacing:.02em;
-    background:var(--paper);color:var(--navy-900);
+  .hero h1{
+    font-size: clamp(38px, 4.4vw, 60px);
+    line-height:1.06;
+    letter-spacing:-0.5px;
+    max-width: 640px;
   }
-  .track-form input:focus{border-color:var(--navy-800);}
+  .hero p{
+    margin-top:22px;
+    font-size:17.5px;
+    line-height:1.65;
+    color: var(--ink-soft);
+    max-width: 460px;
+  }
+  .hero-actions{
+    margin-top:36px;
+    display:flex;
+    gap:16px;
+    align-items:center;
+  }
   .btn-primary{
-    background:var(--amber);color:#fff;border:none;font-weight:700;
-    padding:0 20px;border-radius:9px;font-size:14.5px;white-space:nowrap;transition:.15s;
+    padding:14px 28px;
+    background: var(--emerald);
+    color: var(--ivory);
+    border:1px solid var(--emerald);
+    border-radius:2px;
+    font-size:15px;
+    font-weight:500;
+    cursor:pointer;
+    transition: transform .15s ease, background .15s ease;
   }
-  .btn-primary:hover{background:var(--amber-dark);}
-  .track-hint{margin-top:12px;font-size:12.5px;color:var(--ink-soft);}
-  .track-hint button{background:none;border:none;color:var(--navy-800);font-weight:600;padding:0;text-decoration:underline;font-size:12.5px;}
-  .form-error{
-    margin-top:12px;background:var(--rose-soft);color:#9A2E27;border:1px solid #F3C6C2;
-    padding:9px 12px;border-radius:8px;font-size:13px;display:none;
+  .btn-primary:hover{background:var(--emerald-deep); transform: translateY(-1px);}
+  .btn-secondary{
+    padding:14px 22px;
+    background:transparent;
+    color: var(--emerald-deep);
+    border:1px solid var(--line);
+    border-radius:2px;
+    font-size:15px;
+    font-weight:500;
+    cursor:pointer;
+    transition: border-color .15s ease;
   }
-  .form-error.show{display:block;}
+  .btn-secondary:hover{border-color: var(--emerald);}
 
-  /* ---------- feature grid ---------- */
-  .section-head{max-width:560px;margin-bottom:40px;}
-  .section-head .eyebrow-dark{
-    font-size:12.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--amber-dark);
-    margin-bottom:10px;display:block;
+  .facet-wrap{
+    position:relative;
+    aspect-ratio: 1/1;
+    max-width:420px;
+    justify-self:center;
   }
-  .section-head h2{font-size:30px;}
-  .section-head p{color:var(--ink-soft);margin-top:10px;font-size:15.5px;}
-  .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
-  @media(max-width:860px){.grid-3{grid-template-columns:1fr;}}
-  .feature-card{
-    background:var(--paper-raised);border:1px solid var(--line);border-radius:14px;
-    padding:26px;
-  }
-  .feature-card .icon{
-    width:42px;height:42px;border-radius:10px;background:var(--navy-100);
-    display:flex;align-items:center;justify-content:center;margin-bottom:16px;
-  }
-  .feature-card .icon svg{width:21px;height:21px;stroke:var(--navy-900);}
-  .feature-card h4{font-size:16.5px;margin-bottom:8px;}
-  .feature-card p{color:var(--ink-soft);font-size:14px;margin:0;}
+  .facet-wrap svg{width:100%; height:100%;}
 
-  /* ---------- how it works (real sequence -> numbered) ---------- */
-  .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative;}
-  @media(max-width:860px){.steps{grid-template-columns:1fr;gap:26px;}}
-  .step{padding:0 18px;position:relative;}
-  .step .num{
-    font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:13px;color:var(--amber-dark);
-    background:#FDECD9;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  /* ---------- SECTION GENERIC ---------- */
+  .section{
+    padding: 84px 48px;
+    border-top: 1px solid var(--line);
+  }
+  .section-head{
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+    gap:24px;
+    margin-bottom:48px;
+    flex-wrap:wrap;
+  }
+  .section-eyebrow{
+    font-size:12.5px;
+    letter-spacing:2.2px;
+    text-transform:uppercase;
+    color: var(--gold);
+    font-weight:600;
     margin-bottom:14px;
   }
-  .step h4{font-size:15.5px;margin-bottom:6px;}
-  .step p{color:var(--ink-soft);font-size:13.5px;margin:0;}
-  .step:not(:last-child)::after{
-    content:"";position:absolute;top:15px;left:calc(100% - 18px);width:calc(100% - 12px);
-    height:1.5px;background:var(--line);
+  .section-head h2{
+    font-size: clamp(28px, 3vw, 38px);
   }
-  @media(max-width:860px){.step:not(:last-child)::after{display:none;}}
-
-  /* ---------- CTA band ---------- */
-  .cta-band{
-    background:var(--navy-900);border-radius:20px;padding:44px 48px;
-    display:flex;align-items:center;justify-content:space-between;gap:24px;color:#fff;
-  }
-  @media(max-width:700px){.cta-band{flex-direction:column;text-align:center;}}
-  .cta-band h3{color:#fff;font-size:23px;max-width:380px;}
-  .cta-band p{color:#C9D6EA;margin-top:8px;font-size:14px;}
-
-  /* ---------- footer ---------- */
-  footer{background:var(--navy-950);color:#93A5C4;padding:48px 0 28px;font-size:13.5px;}
-  .footer-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:32px;}
-  @media(max-width:760px){.footer-grid{grid-template-columns:1fr 1fr;}}
-  footer h5{color:#fff;font-size:13px;margin-bottom:14px;letter-spacing:.03em;text-transform:uppercase;}
-  footer ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:9px;}
-  footer .foot-bottom{
-    border-top:1px solid rgba(255,255,255,0.08);margin-top:36px;padding-top:20px;
-    display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;
+  .section-head p{
+    max-width:380px;
+    color: var(--ink-soft);
+    font-size:15.5px;
+    line-height:1.6;
   }
 
-  /* ---------- tracking result ---------- */
-  .result-card{
-    background:var(--paper-raised);border:1px solid var(--line);border-radius:16px;
-    padding:32px;box-shadow:var(--shadow-sm);
+  /* ---------- FEATURE CARDS ---------- */
+  .feature-grid{
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap:1px;
+    background: var(--line);
+    border:1px solid var(--line);
   }
-  .result-top{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;flex-wrap:wrap;}
-  .result-top .code{font-size:12.5px;color:var(--ink-soft);}
-  .result-top .code b{font-family:'IBM Plex Mono',monospace;color:var(--navy-900);font-size:16px;display:block;margin-top:3px;}
-  .status-pill{
-    padding:7px 16px;border-radius:20px;font-weight:700;font-size:13px;display:inline-flex;align-items:center;gap:7px;
+  .feature-card{
+    background: var(--ivory);
+    padding: 40px 34px;
+    position:relative;
   }
-  .status-pill .dot{width:7px;height:7px;border-radius:50%;}
-  .status-transit{background:#FDECD9;color:var(--amber-dark);}
-  .status-transit .dot{background:var(--amber-dark);}
-  .status-delivered{background:var(--emerald-soft);color:var(--emerald);}
-  .status-delivered .dot{background:var(--emerald);}
-  .status-created{background:var(--navy-100);color:var(--navy-800);}
-  .status-created .dot{background:var(--navy-800);}
-  .status-exception{background:var(--rose-soft);color:var(--rose);}
-  .status-exception .dot{background:var(--rose);}
-
-  /* route line — signature element */
-  .route{margin:30px 0 8px;}
-  .route-labels{display:flex;justify-content:space-between;font-size:13px;font-weight:600;color:var(--navy-900);margin-bottom:10px;}
-  .route-labels span.sub{display:block;font-weight:400;color:var(--ink-soft);font-size:12px;margin-top:2px;}
-  .route-track{position:relative;height:6px;background:var(--line);border-radius:6px;margin:18px 0 6px;}
-  .route-fill{position:absolute;top:0;left:0;height:100%;background:var(--amber);border-radius:6px;transition:width .6s ease;}
-  .route-node{
-    position:absolute;top:-8px;width:22px;height:22px;border-radius:50%;background:var(--paper-raised);
-    border:3px solid var(--amber);transform:translateX(-50%);transition:left .6s ease;
-    display:flex;align-items:center;justify-content:center;
+  .feature-index{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12.5px;
+    color: var(--gold);
+    letter-spacing:1px;
+    margin-bottom:26px;
+    display:block;
   }
-  .route-node svg{width:11px;height:11px;}
-  .route-eta{font-size:13px;color:var(--ink-soft);margin-top:14px;}
-  .route-eta b{color:var(--navy-900);}
-
-  .details-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:28px;padding-top:24px;border-top:1px solid var(--line);}
-  @media(max-width:760px){.details-grid{grid-template-columns:1fr 1fr;}}
-  .details-grid div span{display:block;font-size:11.5px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.04em;margin-bottom:5px;}
-  .details-grid div b{font-size:14.5px;color:var(--navy-900);font-weight:600;}
-
-  .timeline{margin-top:28px;padding-top:24px;border-top:1px solid var(--line);}
-  .timeline h4{font-size:15px;margin-bottom:18px;}
-  .tl-item{display:flex;gap:16px;padding-bottom:20px;position:relative;}
-  .tl-item:not(:last-child)::before{
-    content:"";position:absolute;left:8px;top:20px;bottom:0;width:1.5px;background:var(--line);
+  .feature-glyph{
+    width:34px; height:34px;
+    margin-bottom:22px;
   }
-  .tl-dot{width:17px;height:17px;border-radius:50%;background:var(--amber);flex-shrink:0;margin-top:2px;border:3px solid #FDECD9;}
-  .tl-item.done .tl-dot{background:var(--emerald);border-color:var(--emerald-soft);}
-  .tl-item.pending .tl-dot{background:var(--line);border-color:var(--paper);}
-  .tl-content b{font-size:14px;color:var(--navy-900);display:block;}
-  .tl-content span{font-size:13px;color:var(--ink-soft);}
-  .tl-content .time{font-size:12px;color:#9AA9BE;margin-top:2px;display:block;}
-
-  .not-found{
-    background:var(--rose-soft);border:1px solid #F3C6C2;color:#9A2E27;border-radius:14px;
-    padding:24px;text-align:center;font-size:14.5px;
+  .feature-card h3{
+    font-size:19px;
+    margin-bottom:12px;
+    color: var(--emerald-deep);
+  }
+  .feature-card p{
+    font-size:14.8px;
+    line-height:1.6;
+    color: var(--ink-soft);
+    margin:0;
   }
 
-  /* ---------- auth panels ---------- */
-  .auth-shell{max-width:440px;margin:0 auto;}
+  /* ---------- LOGISTICS STRIP ---------- */
+  .logi-strip{
+    margin-top: 56px;
+    border:1px solid var(--line);
+    background: var(--white);
+    padding: 40px;
+  }
+  .logi-strip-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:30px;
+    flex-wrap:wrap;
+    gap:12px;
+  }
+  .logi-strip-head h3{
+    font-size:16px;
+    letter-spacing:1.6px;
+    text-transform:uppercase;
+    color: var(--emerald-deep);
+    font-weight:600;
+  }
+  .logi-strip-head span{
+    font-size:13.5px;
+    color: var(--ink-soft);
+  }
+  .logi-grid{
+    display:grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 28px;
+  }
+  .logi-item{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  .logi-item .dot{
+    width:8px;height:8px;border-radius:50%;
+    background: var(--sapphire);
+  }
+  .logi-item h4{
+    font-family:'Fraunces', serif;
+    font-size:15.5px;
+    font-weight:600;
+    color: var(--emerald-deep);
+    margin:0;
+  }
+  .logi-item p{
+    font-size:13.5px;
+    line-height:1.55;
+    color: var(--ink-soft);
+    margin:0;
+  }
+
+  /* ---------- FOOTER ---------- */
+  .footer{
+    padding: 40px 48px;
+    border-top:1px solid var(--line);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    font-size:13px;
+    color: var(--ink-soft);
+  }
+
+  /* ---------- AUTH ---------- */
+  .auth-wrap{
+    min-height: calc(100vh - 78px);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding: 60px 24px;
+    position:relative;
+  }
   .auth-card{
-    background:var(--paper-raised);border:1px solid var(--line);border-radius:16px;
-    padding:36px;box-shadow:var(--shadow-sm);
+    width:100%;
+    max-width: 420px;
+    background: var(--white);
+    border:1px solid var(--line);
+    padding: 48px 42px;
+    position:relative;
   }
-  .auth-card h2{font-size:23px;}
-  .auth-card .sub{color:var(--ink-soft);font-size:14px;margin-top:6px;}
-  .field{margin-top:18px;}
-  .field label{display:block;font-size:13px;font-weight:600;color:var(--navy-900);margin-bottom:6px;}
-  .field input,.field select,.field textarea{
-    width:100%;padding:11px 13px;border:1.5px solid var(--line);border-radius:9px;
-    font-family:'Inter',sans-serif;font-size:14.5px;color:var(--ink);background:var(--paper);
+  .auth-card::before{
+    content:"";
+    position:absolute;
+    top:-1px; left:-1px;
+    width:28px; height:28px;
+    border-top:2px solid var(--gold);
+    border-left:2px solid var(--gold);
   }
-  .field input:focus,.field select:focus,.field textarea:focus{border-color:var(--navy-800);}
-  .field-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
-  .btn-block{
-    width:100%;background:var(--navy-900);color:#fff;border:none;font-weight:700;
-    padding:13px;border-radius:9px;font-size:14.5px;margin-top:24px;transition:.15s;
+  .auth-card::after{
+    content:"";
+    position:absolute;
+    bottom:-1px; right:-1px;
+    width:28px; height:28px;
+    border-bottom:2px solid var(--gold);
+    border-right:2px solid var(--gold);
   }
-  .btn-block:hover{background:var(--navy-800);}
-  .auth-switch{text-align:center;margin-top:20px;font-size:13.5px;color:var(--ink-soft);}
-  .auth-switch button{background:none;border:none;color:var(--navy-800);font-weight:700;text-decoration:underline;font-size:13.5px;}
+  .auth-eyebrow{
+    font-size:12px;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    color:var(--gold);
+    font-weight:600;
+    margin-bottom:14px;
+  }
+  .auth-card h2{
+    font-size:26px;
+    margin-bottom:8px;
+  }
+  .auth-card > p{
+    font-size:14px;
+    color: var(--ink-soft);
+    margin: 0 0 30px;
+  }
+  .field{
+    margin-bottom: 20px;
+  }
+  .field label{
+    display:block;
+    font-size:12.5px;
+    font-weight:600;
+    letter-spacing:0.6px;
+    text-transform:uppercase;
+    color: var(--ink-soft);
+    margin-bottom:8px;
+  }
+  .field input{
+    width:100%;
+    padding: 13px 14px;
+    border:1px solid var(--line);
+    background: var(--ivory);
+    border-radius:2px;
+    font-size:15px;
+    font-family:'Inter', sans-serif;
+    color: var(--ink);
+    transition: border-color .15s ease;
+  }
+  .field input:focus{
+    outline:none;
+    border-color: var(--emerald);
+  }
+  .auth-submit{
+    width:100%;
+    padding:14px;
+    background: var(--emerald);
+    color: var(--ivory);
+    border:1px solid var(--emerald);
+    border-radius:2px;
+    font-size:15px;
+    font-weight:600;
+    cursor:pointer;
+    margin-top:6px;
+    transition: background .15s ease;
+  }
+  .auth-submit:hover{background: var(--emerald-deep);}
+  .auth-error{
+    display:none;
+    font-size:13.5px;
+    color: var(--error);
+    background: rgba(162,58,47,0.08);
+    border:1px solid rgba(162,58,47,0.28);
+    padding:10px 12px;
+    margin-bottom:18px;
+  }
+  .auth-error.show{display:block;}
+  .auth-hint{
+    margin-top:26px;
+    font-size:12.5px;
+    color: var(--ink-soft);
+    border-top:1px solid var(--line);
+    padding-top:18px;
+    line-height:1.6;
+  }
 
-  /* ---------- dashboards ---------- */
-  .dash-head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:28px;flex-wrap:wrap;gap:14px;}
-  .dash-head h2{font-size:26px;}
-  .dash-head p{color:var(--ink-soft);font-size:14px;margin-top:4px;}
-  .stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-bottom:30px;}
-  @media(max-width:860px){.stat-grid{grid-template-columns:1fr 1fr;}}
-  .stat-card{background:var(--paper-raised);border:1px solid var(--line);border-radius:12px;padding:20px;}
-  .stat-card span{font-size:12.5px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.03em;}
-  .stat-card b{display:block;font-family:'Space Grotesk',sans-serif;font-size:27px;color:var(--navy-900);margin-top:6px;}
+  /* ---------- TRACKING ---------- */
+  .track-wrap{
+    padding: 56px 48px 90px;
+    max-width: 980px;
+    margin: 0 auto;
+  }
+  .track-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    flex-wrap:wrap;
+    gap:20px;
+    margin-bottom:40px;
+  }
+  .track-eyebrow{
+    font-size:12.5px;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    color: var(--gold);
+    font-weight:600;
+    margin-bottom:12px;
+  }
+  .track-number{
+    font-size: clamp(26px, 3.4vw, 36px);
+    letter-spacing:1px;
+  }
+  .status-badge{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    padding:10px 18px;
+    background: var(--emerald);
+    color: var(--ivory);
+    border-radius:2px;
+    font-size:13.5px;
+    font-weight:600;
+    letter-spacing:0.4px;
+    text-transform:uppercase;
+    height:fit-content;
+  }
+  .status-badge .pulse{
+    width:8px;height:8px;border-radius:50%;
+    background: var(--gold-soft);
+  }
+  .status-date{
+    display:block;
+    font-size:12px;
+    color: var(--ivory);
+    opacity:0.8;
+    font-weight:500;
+    text-transform:none;
+    letter-spacing:0;
+    margin-top:2px;
+  }
 
-  .tabs{display:flex;gap:6px;border-bottom:1px solid var(--line);margin-bottom:26px;}
-  .tab-btn{
-    background:none;border:none;padding:12px 18px;font-weight:600;font-size:14px;color:var(--ink-soft);
-    border-bottom:2.5px solid transparent;margin-bottom:-1px;transition:.15s;
+  .track-panels{
+    display:grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap:1px;
+    background: var(--line);
+    border:1px solid var(--line);
+    margin-bottom:1px;
   }
-  .tab-btn.active{color:var(--navy-900);border-color:var(--amber);}
-  .tab-pane{display:none;}
-  .tab-pane.active{display:block;}
+  .panel{
+    background: var(--white);
+    padding:32px;
+  }
+  .panel h3{
+    font-size:13px;
+    letter-spacing:1.6px;
+    text-transform:uppercase;
+    color: var(--ink-soft);
+    font-weight:600;
+    margin-bottom:22px;
+  }
+  .kv-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    padding: 13px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .kv-row:last-child{border-bottom:none;}
+  .kv-key{
+    font-size:14px;
+    color: var(--ink-soft);
+  }
+  .kv-val{
+    font-size:14.5px;
+    font-weight:600;
+    color: var(--emerald-deep);
+    text-align:right;
+  }
 
-  .panel{background:var(--paper-raised);border:1px solid var(--line);border-radius:14px;padding:28px;}
-  .panel h3{font-size:17px;margin-bottom:20px;}
+  .journey{
+    background: var(--white);
+    border:1px solid var(--line);
+    padding:36px 32px;
+  }
+  .journey h3{
+    font-size:13px;
+    letter-spacing:1.6px;
+    text-transform:uppercase;
+    color: var(--ink-soft);
+    font-weight:600;
+    margin-bottom:28px;
+  }
+  .journey-line{
+    display:flex;
+    align-items:center;
+    gap:0;
+  }
+  .journey-node{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:10px;
+    flex:1;
+    position:relative;
+  }
+  .journey-node .ring{
+    width:16px;height:16px;
+    border-radius:50%;
+    background: var(--emerald);
+    border:3px solid var(--gold-soft);
+    z-index:2;
+  }
+  .journey-node.pending .ring{
+    background: var(--white);
+    border:2px solid var(--line);
+  }
+  .journey-node .connector{
+    position:absolute;
+    top:8px;
+    left:50%;
+    width:100%;
+    height:2px;
+    background: var(--line);
+    z-index:1;
+  }
+  .journey-node:last-child .connector{display:none;}
+  .journey-node span{
+    font-size:12.5px;
+    font-weight:600;
+    color: var(--ink-soft);
+    text-align:center;
+  }
+  .journey-node.active span{color: var(--emerald-deep);}
 
-  table{width:100%;border-collapse:collapse;font-size:13.5px;}
-  th{
-    text-align:left;color:var(--ink-soft);font-weight:600;font-size:11.5px;text-transform:uppercase;
-    letter-spacing:.03em;padding:0 12px 10px;border-bottom:1.5px solid var(--line);
+  .track-actions{
+    margin-top:32px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:16px;
   }
-  td{padding:13px 12px;border-bottom:1px solid var(--line);vertical-align:middle;}
-  td.mono-cell{font-family:'IBM Plex Mono',monospace;font-size:13px;}
-  tr:last-child td{border-bottom:none;}
-  .row-actions{display:flex;gap:8px;}
-  .btn-xs{
-    background:var(--navy-100);border:none;color:var(--navy-900);font-weight:600;font-size:12.5px;
-    padding:6px 11px;border-radius:7px;transition:.15s;
+  .signout-link{
+    font-size:13.5px;
+    color: var(--ink-soft);
+    cursor:pointer;
+    text-decoration:underline;
   }
-  .btn-xs:hover{background:var(--navy-800);color:#fff;}
-  .btn-xs.danger{background:var(--rose-soft);color:var(--rose);}
-  .btn-xs.danger:hover{background:var(--rose);color:#fff;}
-  select.status-select{
-    padding:6px 9px;border:1.5px solid var(--line);border-radius:7px;font-size:12.5px;font-family:inherit;
-    background:var(--paper);color:var(--navy-900);font-weight:600;
+  .signout-link:hover{color:var(--emerald);}
+
+  @media (max-width: 880px){
+    .hero{grid-template-columns:1fr; padding-top:56px;}
+    .facet-wrap{order:-1; max-width:280px;}
+    .feature-grid{grid-template-columns:1fr;}
+    .logi-grid{grid-template-columns: 1fr 1fr;}
+    .track-panels{grid-template-columns:1fr;}
+    .nav{padding:18px 22px;}
+    .nav-links{display:none;}
+    .section{padding:56px 22px;}
+    .hero{padding-left:22px; padding-right:22px;}
+    .track-wrap{padding:40px 22px 60px;}
   }
-  .table-toolbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;gap:14px;flex-wrap:wrap;}
-  .table-toolbar input{
-    padding:9px 13px;border:1.5px solid var(--line);border-radius:8px;font-size:13.5px;min-width:220px;
-    background:var(--paper);
-  }
-  .empty-state{text-align:center;padding:48px 20px;color:var(--ink-soft);}
-  .empty-state svg{width:38px;height:38px;stroke:var(--line);margin-bottom:14px;}
-  .toast{
-    position:fixed;bottom:26px;right:26px;background:var(--navy-900);color:#fff;padding:14px 20px;
-    border-radius:10px;font-size:13.5px;font-weight:600;box-shadow:var(--shadow-lg);
-    display:flex;align-items:center;gap:10px;z-index:200;transform:translateY(20px);opacity:0;
-    transition:.25s;pointer-events:none;
-  }
-  .toast.show{transform:translateY(0);opacity:1;}
-  .toast.success{background:var(--emerald);}
-  .toast.error{background:var(--rose);}
-  .badge-role{
-    font-size:11px;font-weight:700;padding:3px 9px;border-radius:12px;text-transform:uppercase;letter-spacing:.03em;
-  }
-  .badge-role.admin{background:var(--navy-900);color:#fff;}
-  .badge-role.customer{background:var(--navy-100);color:var(--navy-900);}
-  .two-col{display:grid;grid-template-columns:1.15fr .85fr;gap:24px;align-items:start;}
-  @media(max-width:900px){.two-col{grid-template-columns:1fr;}}
-  .generated-code{
-    background:var(--navy-100);border:1.5px dashed var(--navy-800);border-radius:10px;
-    padding:18px;text-align:center;margin-top:6px;
-  }
-  .generated-code span{font-size:12px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.03em;}
-  .generated-code b{display:block;font-family:'IBM Plex Mono',monospace;font-size:20px;color:var(--navy-900);margin-top:6px;}
 </style>
 </head>
 <body>
 
-<div class="demo-banner">This is a <b>front-end demonstration</b> of Meridian Freight — data resets on page refresh. Admin demo login: <b>admin</b> / <b>admin123</b></div>
-
-<header class="nav">
-  <div class="nav-inner">
-    <button class="logo" onclick="showView('home')">
-      <span class="logo-mark">
-        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 8L12 4L21 8V16L12 20L3 16V8Z" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/><path d="M3 8L12 12L21 8" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/><path d="M12 12V20" stroke="#fff" stroke-width="1.6"/></svg>
-      </span>
-      Meridian Freight
-    </button>
-    <nav class="nav-links">
-      <button class="nav-btn hide-mobile" onclick="showView('home')">Track</button>
-      <button class="nav-btn hide-mobile" onclick="showView('howitworks')">How it works</button>
-      <span id="nav-guest">
-        <button class="nav-ghost" onclick="showView('login')">Sign in</button>
-        <button class="nav-cta" onclick="showView('signup')">Sign up</button>
-      </span>
-      <span id="nav-user" style="display:none;">
-        <button class="nav-btn" id="nav-dashboard-btn" onclick="showView('customerDashboard')">Dashboard</button>
-        <span class="nav-user-chip">
-          <span class="avatar" id="nav-avatar">U</span>
-          <span id="nav-name">User</span>
-          <button onclick="logout()">Sign out</button>
-        </span>
-      </span>
-      <button class="nav-btn hide-mobile" id="admin-entry-btn" onclick="showView('adminLogin')">Admin</button>
-    </nav>
+<!-- ============ NAV ============ -->
+<div class="nav">
+  <div class="brand" onclick="goTo('home')">
+    <svg class="brand-mark" viewBox="0 0 32 32" fill="none">
+      <path d="M16 2 L28 10 L23 28 L9 28 L4 10 Z" stroke="#0B4B3E" stroke-width="1.6" fill="none"/>
+      <path d="M16 2 L16 28 M4 10 L28 10 M9 28 L16 16 L23 28" stroke="#A87F2E" stroke-width="1"/>
+    </svg>
+    Meridian Vault Freight
   </div>
-</header>
-
-<!-- ============ HOME / TRACK VIEW ============ -->
-<div class="view active" id="view-home">
-  <section class="hero" style="padding-bottom:64px;">
-    <div class="wrap hero-grid">
-      <div>
-        <span class="eyebrow"><span class="dot"></span> Live network status: operating normally</span>
-        <h1>Know exactly where your shipment is, every step of the way.</h1>
-        <p class="lead">Meridian Freight moves parcels and freight across 120+ countries. Enter a tracking number below for live status, or sign up to manage every shipment from one place.</p>
-        <div class="hero-stats">
-          <div><b>120+</b><span>Countries served</span></div>
-          <div><b>99.4%</b><span>On-time delivery</span></div>
-          <div><b>24/7</b><span>Support coverage</span></div>
-        </div>
-      </div>
-      <div class="track-card">
-        <h3>Track your shipment</h3>
-        <div class="sub">Enter the tracking number from your shipping confirmation.</div>
-        <form class="track-form" onsubmit="handleTrack(event)">
-          <input type="text" id="track-input" placeholder="e.g. MF10293847" autocomplete="off">
-          <button class="btn-primary" type="submit">Track</button>
-        </form>
-        <div class="form-error" id="track-error">We couldn't find a shipment with that tracking number. Double-check the code and try again.</div>
-        <div class="track-hint">Don't have a number? Try a sample: <button type="button" onclick="fillSample('MF10293847')">MF10293847</button> or <button type="button" onclick="fillSample('MF88213765')">MF88213765</button></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- result appears here -->
-  <section class="section-tight" id="result-section" style="display:none;">
-    <div class="wrap" id="result-mount"></div>
-  </section>
-
-  <section>
-    <div class="wrap">
-      <div class="section-head">
-        <span class="eyebrow-dark">Why Meridian</span>
-        <h2>Built for businesses that can't afford surprises</h2>
-        <p>Every feature here exists because a shipment once needed it — from proactive delay alerts to an admin console that gives your team full control.</p>
-      </div>
-      <div class="grid-3">
-        <div class="feature-card">
-          <div class="icon"><svg viewBox="0 0 24 24" fill="none"><path d="M12 22s7-4.5 7-11a7 7 0 10-14 0c0 6.5 7 11 7 11z" stroke-width="1.6" stroke-linejoin="round"/><circle cx="12" cy="11" r="2.4" stroke-width="1.6"/></svg></div>
-          <h4>Real-time tracking</h4>
-          <p>Live status updates from pickup to final delivery, down to the last checkpoint.</p>
-        </div>
-        <div class="feature-card">
-          <div class="icon"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3l7 3v6c0 4.5-3 8-7 9-4-1-7-4.5-7-9V6l7-3z" stroke-width="1.6" stroke-linejoin="round"/></svg></div>
-          <h4>Secure by design</h4>
-          <p>Every shipment record is tied to a verified account, with an audit trail your admin team controls.</p>
-        </div>
-        <div class="feature-card">
-          <div class="icon"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="7" width="13" height="10" rx="1.4" stroke-width="1.6"/><path d="M16 10h3l2 3v4h-5v-7z" stroke-width="1.6" stroke-linejoin="round"/><circle cx="7.5" cy="18.5" r="1.6" stroke-width="1.6"/><circle cx="17.5" cy="18.5" r="1.6" stroke-width="1.6"/></svg></div>
-          <h4>Freight &amp; parcel, one platform</h4>
-          <p>From a single envelope to a full pallet — one tracking number format, one dashboard.</p>
-        </div>
-        <div class="feature-card">
-          <div class="icon"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3v3M12 18v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M3 12h3M18 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1" stroke-width="1.6" stroke-linecap="round"/><circle cx="12" cy="12" r="4" stroke-width="1.6"/></svg></div>
-          <h4>Proactive alerts</h4>
-          <p>Status changes and exceptions surface immediately in your dashboard — no refreshing required.</p>
-        </div>
-        <div class="feature-card">
-          <div class="icon"><svg viewBox="0 0 24 24" fill="none"><path d="M4 19V5a2 2 0 012-2h9l5 5v11a2 2 0 01-2 2H6a2 2 0 01-2-2z" stroke-width="1.6" stroke-linejoin="round"/><path d="M8 12h8M8 16h5" stroke-width="1.6" stroke-linecap="round"/></svg></div>
-          <h4>Full shipment history</h4>
-          <p>Every account keeps a complete, searchable record of past and current shipments.</p>
-        </div>
-        <div class="feature-card">
-          <div class="icon"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="16" rx="2" stroke-width="1.6"/><path d="M3 9h18M8 4v5" stroke-width="1.6"/></svg></div>
-          <h4>Admin control center</h4>
-          <p>Create shipments, update statuses, and manage every customer from one console.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="section-tight" id="howitworks">
-    <div class="wrap">
-      <div class="section-head">
-        <span class="eyebrow-dark">The journey</span>
-        <h2>What happens after you ship</h2>
-      </div>
-      <div class="steps">
-        <div class="step"><div class="num">1</div><h4>Shipment created</h4><p>Our team generates a tracking number and logs pickup details.</p></div>
-        <div class="step"><div class="num">2</div><h4>Picked up</h4><p>Your parcel is collected and scanned into the network.</p></div>
-        <div class="step"><div class="num">3</div><h4>In transit</h4><p>It moves between facilities, with each checkpoint logged live.</p></div>
-        <div class="step"><div class="num">4</div><h4>Delivered</h4><p>Signed, scanned, and marked complete on your dashboard.</p></div>
-      </div>
-    </div>
-  </section>
-
-  <section class="section-tight">
-    <div class="wrap">
-      <div class="cta-band">
-        <div>
-          <h3>Create a free account to track every shipment in one place.</h3>
-          <p>No commitment — just a cleaner way to keep an eye on what's moving.</p>
-        </div>
-        <button class="nav-cta" style="padding:13px 24px;font-size:15px;" onclick="showView('signup')">Sign up free</button>
-      </div>
-    </div>
-  </section>
-</div>
-
-<!-- ============ SIGN UP ============ -->
-<div class="view" id="view-signup">
-  <section>
-    <div class="wrap auth-shell">
-      <div class="auth-card">
-        <h2>Create your account</h2>
-        <div class="sub">Track and manage all your shipments in one dashboard.</div>
-        <div class="form-error" id="signup-error"></div>
-        <form onsubmit="handleSignup(event)">
-          <div class="field"><label for="su-name">Full name</label><input id="su-name" type="text" required></div>
-          <div class="field"><label for="su-email">Email address</label><input id="su-email" type="email" required></div>
-          <div class="field"><label for="su-password">Password</label><input id="su-password" type="password" minlength="6" required></div>
-          <div class="field"><label for="su-password2">Confirm password</label><input id="su-password2" type="password" minlength="6" required></div>
-          <button class="btn-block" type="submit">Create account</button>
-        </form>
-        <div class="auth-switch">Already have an account? <button onclick="showView('login')">Sign in</button></div>
-      </div>
-    </div>
-  </section>
-</div>
-
-<!-- ============ LOGIN ============ -->
-<div class="view" id="view-login">
-  <section>
-    <div class="wrap auth-shell">
-      <div class="auth-card">
-        <h2>Sign in</h2>
-        <div class="sub">Welcome back — access your shipment dashboard.</div>
-        <div class="form-error" id="login-error"></div>
-        <form onsubmit="handleLogin(event)">
-          <div class="field"><label for="li-email">Email address</label><input id="li-email" type="email" required></div>
-          <div class="field"><label for="li-password">Password</label><input id="li-password" type="password" required></div>
-          <button class="btn-block" type="submit">Sign in</button>
-        </form>
-        <div class="auth-switch">New to Meridian? <button onclick="showView('signup')">Create an account</button></div>
-      </div>
-    </div>
-  </section>
-</div>
-
-<!-- ============ ADMIN LOGIN ============ -->
-<div class="view" id="view-adminLogin">
-  <section>
-    <div class="wrap auth-shell">
-      <div class="auth-card">
-        <h2>Admin console</h2>
-        <div class="sub">Restricted access for Meridian Freight staff.</div>
-        <div class="form-error" id="admin-login-error"></div>
-        <form onsubmit="handleAdminLogin(event)">
-          <div class="field"><label for="ad-user">Username</label><input id="ad-user" type="text" required></div>
-          <div class="field"><label for="ad-pass">Password</label><input id="ad-pass" type="password" required></div>
-          <button class="btn-block" type="submit">Enter console</button>
-        </form>
-        <div class="auth-switch">Not staff? <button onclick="showView('home')">Back to tracking</button></div>
-      </div>
-    </div>
-  </section>
-</div>
-
-<!-- ============ CUSTOMER DASHBOARD ============ -->
-<div class="view" id="view-customerDashboard">
-  <section>
-    <div class="wrap">
-      <div class="dash-head">
-        <div><h2 id="cust-welcome">Your shipments</h2><p>Everything you're sending or expecting, in one place.</p></div>
-        <button class="nav-cta" onclick="openAddShipment()">+ Add a shipment to my account</button>
-      </div>
-
-      <div class="panel" id="add-shipment-panel" style="display:none;margin-bottom:26px;">
-        <h3>Add an existing shipment</h3>
-        <form onsubmit="handleAddToAccount(event)" style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;">
-          <div class="field" style="margin-top:0;flex:1;min-width:220px;"><label for="add-track-code">Tracking number</label><input id="add-track-code" type="text" placeholder="e.g. MF10293847"></div>
-          <button class="btn-primary" style="padding:12px 20px;" type="submit">Add to my account</button>
-        </form>
-      </div>
-
-      <div class="panel">
-        <div class="table-toolbar">
-          <input type="text" id="cust-search" placeholder="Search by tracking number or destination" oninput="renderCustomerTable()">
-          <select class="status-select" id="cust-filter" onchange="renderCustomerTable()">
-            <option value="all">All statuses</option>
-            <option value="Created">Created</option>
-            <option value="In Transit">In Transit</option>
-            <option value="Out for Delivery">Out for Delivery</option>
-            <option value="Delivered">Delivered</option>
-            <option value="Exception">Exception</option>
-          </select>
-        </div>
-        <div id="cust-table-mount"></div>
-      </div>
-    </div>
-  </section>
-</div>
-
-<!-- ============ ADMIN DASHBOARD ============ -->
-<div class="view" id="view-adminDashboard">
-  <section>
-    <div class="wrap">
-      <div class="dash-head">
-        <div><h2>Admin console</h2><p>Create shipments, update statuses, and manage customer accounts.</p></div>
-      </div>
-
-      <div class="stat-grid" id="admin-stats"></div>
-
-      <div class="tabs">
-        <button class="tab-btn active" onclick="switchAdminTab('shipments',this)">All shipments</button>
-        <button class="tab-btn" onclick="switchAdminTab('create',this)">Create shipment</button>
-        <button class="tab-btn" onclick="switchAdminTab('users',this)">Customer accounts</button>
-      </div>
-
-      <div class="tab-pane active" id="admin-tab-shipments">
-        <div class="panel">
-          <div class="table-toolbar">
-            <input type="text" id="admin-search" placeholder="Search tracking #, name, or destination" oninput="renderAdminTable()">
-            <select class="status-select" id="admin-filter" onchange="renderAdminTable()">
-              <option value="all">All statuses</option>
-              <option value="Created">Created</option>
-              <option value="In Transit">In Transit</option>
-              <option value="Out for Delivery">Out for Delivery</option>
-              <option value="Delivered">Delivered</option>
-              <option value="Exception">Exception</option>
-            </select>
-          </div>
-          <div id="admin-table-mount"></div>
-        </div>
-      </div>
-
-      <div class="tab-pane" id="admin-tab-create">
-        <div class="two-col">
-          <div class="panel">
-            <h3>New shipment</h3>
-            <form onsubmit="handleCreateShipment(event)">
-              <div class="field-row">
-                <div class="field"><label for="cs-sender">Sender name</label><input id="cs-sender" type="text" required></div>
-                <div class="field"><label for="cs-recipient">Recipient name</label><input id="cs-recipient" type="text" required></div>
-              </div>
-              <div class="field"><label for="cs-recipient-email">Recipient email <span style="font-weight:400;color:var(--ink-soft);">(optional — links to their account)</span></label><input id="cs-recipient-email" type="email"></div>
-              <div class="field-row">
-                <div class="field"><label for="cs-origin">Origin</label><input id="cs-origin" type="text" placeholder="City, Country" required></div>
-                <div class="field"><label for="cs-destination">Destination</label><input id="cs-destination" type="text" placeholder="City, Country" required></div>
-              </div>
-              <div class="field-row">
-                <div class="field"><label for="cs-weight">Weight (kg)</label><input id="cs-weight" type="number" step="0.1" min="0.1" required></div>
-                <div class="field"><label for="cs-service">Service level</label>
-                  <select id="cs-service">
-                    <option>Standard Ground</option>
-                    <option>Express Air</option>
-                    <option>Priority Overnight</option>
-                    <option>International Freight</option>
-                  </select>
-                </div>
-              </div>
-              <div class="field"><label for="cs-eta">Estimated delivery date</label><input id="cs-eta" type="date" required></div>
-              <button class="btn-block" type="submit">Generate shipment &amp; tracking number</button>
-            </form>
-          </div>
-          <div class="panel" id="cs-result-panel" style="display:none;">
-            <h3>Shipment created</h3>
-            <div class="generated-code">
-              <span>Tracking number</span>
-              <b id="cs-generated-code">—</b>
-            </div>
-            <p style="font-size:13.5px;color:var(--ink-soft);margin-top:16px;">Share this number with the recipient, or they can add it to their account from their dashboard.</p>
-            <button class="btn-xs" style="margin-top:6px;" onclick="switchAdminTab('shipments', document.querySelectorAll('.tab-btn')[0])">View in all shipments</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="tab-pane" id="admin-tab-users">
-        <div class="panel">
-          <h3>Registered customers</h3>
-          <div id="admin-users-mount"></div>
-        </div>
-      </div>
-    </div>
-  </section>
-</div>
-
-<!-- ============ STATUS UPDATE MODAL ============ -->
-<div id="modal-backdrop" style="display:none;position:fixed;inset:0;background:rgba(8,27,51,0.55);z-index:150;align-items:center;justify-content:center;padding:20px;">
-  <div class="panel" style="max-width:440px;width:100%;">
-    <h3>Update shipment status</h3>
-    <div class="field"><label for="modal-status">Status</label>
-      <select id="modal-status">
-        <option>Created</option>
-        <option>In Transit</option>
-        <option>Out for Delivery</option>
-        <option>Delivered</option>
-        <option>Exception</option>
-      </select>
-    </div>
-    <div class="field"><label for="modal-location">Current location</label><input id="modal-location" type="text" placeholder="e.g. Frankfurt Sorting Hub"></div>
-    <div class="field"><label for="modal-note">Note for tracking timeline</label><input id="modal-note" type="text" placeholder="e.g. Departed facility, next stop Accra"></div>
-    <div style="display:flex;gap:10px;margin-top:24px;">
-      <button class="nav-ghost" style="flex:1;" onclick="closeModal()">Cancel</button>
-      <button class="nav-cta" style="flex:1;" onclick="saveStatusUpdate()">Save update</button>
-    </div>
+  <div class="nav-links">
+    <span onclick="goTo('home')">Home</span>
+    <span onclick="scrollToFeatures()">Features</span>
+    <span onclick="goTo('tracking')">Tracking</span>
+  </div>
+  <div id="navAuthArea">
+    <div class="nav-cta ghost" onclick="goTo('signin')">Sign In</div>
   </div>
 </div>
 
-<div class="toast" id="toast"></div>
+<!-- ============ HOME PAGE ============ -->
+<div class="page active" id="page-home">
 
-<footer>
-  <div class="wrap footer-grid">
+  <section class="hero">
     <div>
-      <div class="logo" style="color:#fff;margin-bottom:14px;">
-        <span class="logo-mark"><svg viewBox="0 0 24 24" fill="none"><path d="M3 8L12 4L21 8V16L12 20L3 16V8Z" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/></svg></span>
-        Meridian Freight
+      <div class="hero-eyebrow">Specialized High-Value Freight</div>
+      <h1>Precious Metals &amp; Gemstones Shipping</h1>
+      <p>We professionally transport and handle precious metals and gemstones only.</p>
+      <div class="hero-actions">
+        <button class="btn-primary" onclick="goTo('signin')">Track a Shipment</button>
+        <button class="btn-secondary" onclick="scrollToFeatures()">See Features</button>
       </div>
-      <p style="max-width:260px;color:#7C8FB0;">Reliable parcel and freight tracking for growing businesses, worldwide.</p>
     </div>
-    <div><h5>Product</h5><ul><li>Track a shipment</li><li>Create an account</li><li>Admin console</li></ul></div>
-    <div><h5>Company</h5><ul><li>About</li><li>Careers</li><li>Contact</li></ul></div>
-    <div><h5>Support</h5><ul><li>Help center</li><li>Service guide</li><li>Claims</li></ul></div>
+    <div class="facet-wrap">
+      <svg viewBox="0 0 400 400">
+        <polygon points="200,20 340,110 340,290 200,380 60,290 60,110" fill="none" stroke="#0B4B3E" stroke-width="1.4"/>
+        <polygon points="200,20 340,110 200,180 60,110" fill="#0B4B3E" fill-opacity="0.06" stroke="#0B4B3E" stroke-width="1"/>
+        <polygon points="60,110 200,180 200,380 60,290" fill="#A87F2E" fill-opacity="0.10" stroke="#A87F2E" stroke-width="1"/>
+        <polygon points="340,110 340,290 200,380 200,180" fill="#1B3A6B" fill-opacity="0.08" stroke="#1B3A6B" stroke-width="1"/>
+        <line x1="200" y1="20" x2="200" y2="380" stroke="#0B4B3E" stroke-width="0.7" stroke-opacity="0.4"/>
+        <line x1="60" y1="110" x2="340" y2="290" stroke="#0B4B3E" stroke-width="0.7" stroke-opacity="0.4"/>
+        <line x1="340" y1="110" x2="60" y2="290" stroke="#0B4B3E" stroke-width="0.7" stroke-opacity="0.4"/>
+        <circle cx="200" cy="180" r="3" fill="#A87F2E"/>
+      </svg>
+    </div>
+  </section>
+
+  <section class="section" id="features">
+    <div class="section-head">
+      <div>
+        <div class="section-eyebrow">What We Do</div>
+        <h2>Our Features</h2>
+      </div>
+      <p>Built exclusively around the demands of moving high-value materials — nothing else on our manifest.</p>
+    </div>
+
+    <div class="feature-grid">
+      <div class="feature-card">
+        <span class="feature-index">01</span>
+        <svg class="feature-glyph" viewBox="0 0 34 34" fill="none">
+          <circle cx="17" cy="17" r="13" stroke="#A87F2E" stroke-width="1.4"/>
+          <path d="M17 8 L20 15 L27 17 L20 19 L17 26 L14 19 L7 17 L14 15 Z" fill="#A87F2E" fill-opacity="0.16" stroke="#A87F2E" stroke-width="1"/>
+        </svg>
+        <h3>Specialized Industry</h3>
+        <p>We deal exclusively in precious metals and gemstones.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-index">02</span>
+        <svg class="feature-glyph" viewBox="0 0 34 34" fill="none">
+          <rect x="6" y="14" width="22" height="14" rx="1" stroke="#0B4B3E" stroke-width="1.4"/>
+          <path d="M11 14 V10 a6 6 0 0 1 12 0 v4" stroke="#0B4B3E" stroke-width="1.4"/>
+          <circle cx="17" cy="21" r="2" fill="#0B4B3E"/>
+        </svg>
+        <h3>Professional Handling</h3>
+        <p>Secure and reliable processing for high-value shipments.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-index">03</span>
+        <svg class="feature-glyph" viewBox="0 0 34 34" fill="none">
+          <circle cx="17" cy="17" r="13" stroke="#1B3A6B" stroke-width="1.4"/>
+          <path d="M17 9 L17 17 L22 20" stroke="#1B3A6B" stroke-width="1.4" stroke-linecap="round"/>
+        </svg>
+        <h3>Tracking Access</h3>
+        <p>Shipment tracking is available after sign-in.</p>
+      </div>
+    </div>
+
+    <div class="logi-strip">
+      <div class="logi-strip-head">
+        <h3>Built for High-Value Logistics</h3>
+        <span>The standards our operation runs on</span>
+      </div>
+      <div class="logi-grid">
+        <div class="logi-item">
+          <span class="dot"></span>
+          <h4>Real-Time Tracking</h4>
+          <p>Live shipment status from departure to delivery, updated at every checkpoint.</p>
+        </div>
+        <div class="logi-item">
+          <span class="dot"></span>
+          <h4>Insured Custody Chain</h4>
+          <p>Every parcel is insured and logged through an unbroken chain of custody.</p>
+        </div>
+        <div class="logi-item">
+          <span class="dot"></span>
+          <h4>Global Compliance</h4>
+          <p>Customs documentation and cross-border compliance handled for every route.</p>
+        </div>
+        <div class="logi-item">
+          <span class="dot"></span>
+          <h4>24/7 Client Support</h4>
+          <p>Direct access to a specialist team for any shipment, any time zone.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="footer">
+    <span>© 2026 Meridian Vault Freight</span>
+    <span>Accra · New York · Zürich</span>
   </div>
-  <div class="wrap foot-bottom">
-    <span>© 2026 Meridian Freight. All rights reserved.</span>
-    <span>Demo build — not a live carrier.</span>
+</div>
+
+<!-- ============ SIGN IN PAGE ============ -->
+<div class="page" id="page-signin">
+  <div class="auth-wrap">
+    <div class="auth-card">
+      <div class="auth-eyebrow">Client Access</div>
+      <h2>Sign In</h2>
+      <p>Enter your credentials to view your shipment tracking.</p>
+
+      <div class="auth-error" id="authError">Incorrect email or password. Please try again.</div>
+
+      <form id="signinForm" onsubmit="return handleSignIn(event)">
+        <div class="field">
+          <label for="email">Email</label>
+          <input type="email" id="email" placeholder="you@company.com" required>
+        </div>
+        <div class="field">
+          <label for="password">Password</label>
+          <input type="password" id="password" placeholder="••••••••" required>
+        </div>
+        <button type="submit" class="auth-submit">Sign In</button>
+      </form>
+
+      <div class="auth-hint">Don't have access yet? Contact your account manager to request tracking credentials.</div>
+    </div>
   </div>
-</footer>
+</div>
+
+<!-- ============ TRACKING PAGE ============ -->
+<div class="page" id="page-tracking">
+  <div class="track-wrap">
+    <div class="track-top">
+      <div>
+        <div class="track-eyebrow">Shipment Tracking</div>
+        <h2 class="track-number mono">MF499375001</h2>
+      </div>
+      <div class="status-badge">
+        <span class="pulse"></span>
+        <div>
+          Received
+          <span class="status-date">4 August 2026</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="journey">
+      <h3>Shipment Journey</h3>
+      <div class="journey-line">
+        <div class="journey-node active">
+          <div class="connector"></div>
+          <div class="ring"></div>
+          <span>Booked</span>
+        </div>
+        <div class="journey-node active">
+          <div class="connector"></div>
+          <div class="ring"></div>
+          <span>Received</span>
+        </div>
+        <div class="journey-node pending">
+          <div class="connector"></div>
+          <div class="ring"></div>
+          <span>In Transit</span>
+        </div>
+        <div class="journey-node pending">
+          <div class="connector"></div>
+          <div class="ring"></div>
+          <span>Customs</span>
+        </div>
+        <div class="journey-node pending">
+          <div class="ring"></div>
+          <span>Delivered</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="track-panels" style="margin-top:1px;">
+      <div class="panel">
+        <h3>Shipment Overview</h3>
+        <div class="kv-row"><span class="kv-key">Package Type</span><span class="kv-val">Precious Metals</span></div>
+        <div class="kv-row"><span class="kv-key">Package Weight</span><span class="kv-val">55 KG</span></div>
+        <div class="kv-row"><span class="kv-key">Departure Location</span><span class="kv-val">Accra, Ghana</span></div>
+        <div class="kv-row"><span class="kv-key">Destination</span><span class="kv-val">USA</span></div>
+      </div>
+      <div class="panel">
+        <h3>Sender Details</h3>
+        <div class="kv-row"><span class="kv-key">Sender Address</span><span class="kv-val">Accra, Ghana</span></div>
+      </div>
+    </div>
+
+    <div class="track-actions">
+      <span class="signout-link" onclick="signOut()">Sign out</span>
+      <span class="signout-link" onclick="goTo('home')">Back to Home</span>
+    </div>
+  </div>
+</div>
 
 <script>
-/* =========================================================
-   DATA LAYER — in-memory only (resets on refresh).
-   This is a front-end demo: wire these functions to a real
-   backend/database for production use.
-========================================================= */
-const STEP_ORDER = ["Created","In Transit","Out for Delivery","Delivered"];
+  // ---- test credentials (client-side demo only) ----
+  const VALID_USERS = [
+    { email: "cindyasamoash893@gmail.com", password: "Cindy12345" }
+  ];
 
-let shipments = [
-  {
-    code:"MF10293847", sender:"Adjoa Mensah", recipient:"Kwame Boateng", recipientEmail:"customer@example.com",
-    origin:"Accra, Ghana", destination:"London, United Kingdom", weight:2.4, service:"Express Air",
-    status:"In Transit", eta:"2026-08-03",
-    history:[
-      {status:"Created", location:"Accra, Ghana", note:"Shipment created and label printed.", time:"Jul 24, 09:12"},
-      {status:"In Transit", location:"Accra, Ghana", note:"Picked up from sender.", time:"Jul 24, 14:40"},
-      {status:"In Transit", location:"Accra Kotoka Int'l Hub", note:"Departed origin facility.", time:"Jul 25, 06:05"},
-      {status:"In Transit", location:"Charles de Gaulle Hub, Paris", note:"Arrived at transit facility.", time:"Jul 27, 03:20"},
-    ]
-  },
-  {
-    code:"MF88213765", sender:"Meridian Fulfilment", recipient:"Sarah Owusu", recipientEmail:"customer@example.com",
-    origin:"Kumasi, Ghana", destination:"Accra, Ghana", weight:0.8, service:"Standard Ground",
-    status:"Delivered", eta:"2026-07-22",
-    history:[
-      {status:"Created", location:"Kumasi, Ghana", note:"Shipment created and label printed.", time:"Jul 19, 10:02"},
-      {status:"In Transit", location:"Kumasi, Ghana", note:"Picked up from sender.", time:"Jul 19, 15:30"},
-      {status:"Out for Delivery", location:"Accra, Ghana", note:"With courier for final delivery.", time:"Jul 22, 08:00"},
-      {status:"Delivered", location:"Accra, Ghana", note:"Delivered — signed by recipient.", time:"Jul 22, 11:45"},
-    ]
-  },
-  {
-    code:"MF55201199", sender:"Global Parts Ltd", recipient:"Kwame Boateng", recipientEmail:"customer@example.com",
-    origin:"Tema, Ghana", destination:"Lagos, Nigeria", weight:14.2, service:"International Freight",
-    status:"Exception", eta:"2026-07-30",
-    history:[
-      {status:"Created", location:"Tema, Ghana", note:"Shipment created and label printed.", time:"Jul 20, 08:00"},
-      {status:"In Transit", location:"Tema Port", note:"Departed origin facility.", time:"Jul 21, 12:15"},
-      {status:"Exception", location:"Lagos Customs Facility", note:"Held for additional customs documentation.", time:"Jul 26, 09:40"},
-    ]
+  let isLoggedIn = false;
+
+  function goTo(pageName){
+    if(pageName === 'tracking' && !isLoggedIn){
+      pageName = 'signin';
+    }
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById('page-' + pageName).classList.add('active');
+    window.scrollTo({top:0, behavior:'instant'});
+    renderNav();
   }
-];
 
-let users = [
-  {name:"Kwame Boateng", email:"customer@example.com", password:"password1"}
-];
-
-let currentUser = null;   // {name,email}
-let isAdmin = false;
-let editingCode = null;   // tracking code currently open in the status modal
-
-/* =========================================================
-   VIEW ROUTING
-========================================================= */
-function showView(name){
-  document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));
-  document.getElementById("view-"+name).classList.add("active");
-  window.scrollTo({top:0,behavior:"smooth"});
-  if(name==="customerDashboard") renderCustomerTable();
-  if(name==="adminDashboard") renderAdminAll();
-}
-
-function fillSample(code){
-  document.getElementById("track-input").value = code;
-}
-
-/* =========================================================
-   TOAST
-========================================================= */
-function toast(msg, type){
-  const t = document.getElementById("toast");
-  t.textContent = msg;
-  t.className = "toast show" + (type ? " "+type : "");
-  clearTimeout(window._toastTimer);
-  window._toastTimer = setTimeout(()=>{ t.classList.remove("show"); }, 2600);
-}
-
-/* =========================================================
-   TRACKING
-========================================================= */
-function handleTrack(e){
-  e.preventDefault();
-  const code = document.getElementById("track-input").value.trim().toUpperCase();
-  const errBox = document.getElementById("track-error");
-  const shipment = shipments.find(s=>s.code===code);
-  const resultSection = document.getElementById("result-section");
-  const mount = document.getElementById("result-mount");
-
-  if(!code){ errBox.textContent="Please enter a tracking number."; errBox.classList.add("show"); return; }
-
-  if(!shipment){
-    errBox.classList.remove("show");
-    resultSection.style.display="block";
-    mount.innerHTML = `<div class="not-found"><b>No shipment found for “${escapeHtml(code)}.”</b><br>Check the tracking number and try again, or sign in if this shipment is linked to your account.</div>`;
-    resultSection.scrollIntoView({behavior:"smooth"});
-    return;
+  function scrollToFeatures(){
+    goTo('home');
+    setTimeout(() => {
+      document.getElementById('features').scrollIntoView({behavior:'smooth'});
+    }, 30);
   }
-  errBox.classList.remove("show");
-  resultSection.style.display="block";
-  mount.innerHTML = renderResultCard(shipment);
-  resultSection.scrollIntoView({behavior:"smooth"});
-}
 
-function statusPillClass(status){
-  if(status==="Delivered") return "status-delivered";
-  if(status==="Exception") return "status-exception";
-  if(status==="Created") return "status-created";
-  return "status-transit";
-}
+  function handleSignIn(e){
+    e.preventDefault();
+    const email = document.getElementById('email').value.trim().toLowerCase();
+    const password = document.getElementById('password').value;
+    const match = VALID_USERS.find(u => u.email.toLowerCase() === email && u.password === password);
+    const errorBox = document.getElementById('authError');
 
-function progressPercent(shipment){
-  if(shipment.status==="Exception") return 62;
-  const idx = STEP_ORDER.indexOf(shipment.status);
-  if(idx<0) return 8;
-  return Math.round((idx/(STEP_ORDER.length-1))*100);
-}
-
-function renderResultCard(s){
-  const pct = progressPercent(s);
-  const pillClass = statusPillClass(s.status);
-  const historyRows = s.history.slice().reverse().map((h,i)=>{
-    const isLast = i===0;
-    return `
-      <div class="tl-item ${isLast?'done':''}">
-        <div class="tl-dot"></div>
-        <div class="tl-content">
-          <b>${escapeHtml(h.status)} — ${escapeHtml(h.location)}</b>
-          <span>${escapeHtml(h.note)}</span>
-          <span class="time">${escapeHtml(h.time)}</span>
-        </div>
-      </div>`;
-  }).join("");
-
-  return `
-  <div class="result-card">
-    <div class="result-top">
-      <div class="code">Tracking number<b>${escapeHtml(s.code)}</b></div>
-      <span class="status-pill ${pillClass}"><span class="dot"></span>${escapeHtml(s.status)}</span>
-    </div>
-    <div class="route">
-      <div class="route-labels">
-        <span>${escapeHtml(s.origin)}<span class="sub">Origin</span></span>
-        <span style="text-align:right;">${escapeHtml(s.destination)}<span class="sub">Destination</span></span>
-      </div>
-      <div class="route-track">
-        <div class="route-fill" style="width:${pct}%;"></div>
-        <div class="route-node" style="left:${pct}%;">
-          <svg viewBox="0 0 24 24" fill="none"><path d="M3 13h11l4 4h3v-4l-3-4h-4V5H6L3 9v4z" stroke="#F5821F" stroke-width="1.6" stroke-linejoin="round"/></svg>
-        </div>
-      </div>
-      <div class="route-eta">${s.status==="Delivered" ? "Delivered." : `Estimated delivery: <b>${formatDate(s.eta)}</b>`}</div>
-    </div>
-    <div class="details-grid">
-      <div><span>Sender</span><b>${escapeHtml(s.sender)}</b></div>
-      <div><span>Recipient</span><b>${escapeHtml(s.recipient)}</b></div>
-      <div><span>Service</span><b>${escapeHtml(s.service)}</b></div>
-      <div><span>Weight</span><b>${s.weight} kg</b></div>
-    </div>
-    <div class="timeline">
-      <h4>Tracking history</h4>
-      ${historyRows}
-    </div>
-  </div>`;
-}
-
-function formatDate(iso){
-  const d = new Date(iso+"T00:00:00");
-  if(isNaN(d)) return iso;
-  return d.toLocaleDateString(undefined,{month:"short",day:"numeric",year:"numeric"});
-}
-
-function escapeHtml(str){
-  return String(str).replace(/[&<>"']/g, m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
-}
-
-/* =========================================================
-   AUTH — CUSTOMER
-========================================================= */
-function handleSignup(e){
-  e.preventDefault();
-  const name = document.getElementById("su-name").value.trim();
-  const email = document.getElementById("su-email").value.trim().toLowerCase();
-  const pw = document.getElementById("su-password").value;
-  const pw2 = document.getElementById("su-password2").value;
-  const errBox = document.getElementById("signup-error");
-
-  if(pw !== pw2){ showError(errBox,"Passwords don't match."); return; }
-  if(users.find(u=>u.email===email)){ showError(errBox,"An account with this email already exists."); return; }
-
-  users.push({name, email, password: pw});
-  currentUser = {name, email};
-  errBox.classList.remove("show");
-  setLoggedInNav();
-  toast("Account created — welcome, "+name.split(" ")[0]+".", "success");
-  showView("customerDashboard");
-}
-
-function handleLogin(e){
-  e.preventDefault();
-  const email = document.getElementById("li-email").value.trim().toLowerCase();
-  const pw = document.getElementById("li-password").value;
-  const errBox = document.getElementById("login-error");
-  const user = users.find(u=>u.email===email && u.password===pw);
-  if(!user){ showError(errBox,"Incorrect email or password."); return; }
-  currentUser = {name:user.name, email:user.email};
-  errBox.classList.remove("show");
-  setLoggedInNav();
-  toast("Welcome back, "+user.name.split(" ")[0]+".", "success");
-  showView("customerDashboard");
-}
-
-function logout(){
-  currentUser = null;
-  isAdmin = false;
-  setLoggedOutNav();
-  toast("Signed out.");
-  showView("home");
-}
-
-function showError(box, msg){ box.textContent = msg; box.classList.add("show"); }
-
-function setLoggedInNav(){
-  document.getElementById("nav-guest").style.display="none";
-  document.getElementById("nav-user").style.display="inline-flex";
-  document.getElementById("nav-name").textContent = currentUser.name.split(" ")[0];
-  document.getElementById("nav-avatar").textContent = currentUser.name.charAt(0).toUpperCase();
-}
-function setLoggedOutNav(){
-  document.getElementById("nav-guest").style.display="inline-flex";
-  document.getElementById("nav-user").style.display="none";
-}
-
-/* =========================================================
-   AUTH — ADMIN (demo credentials)
-========================================================= */
-function handleAdminLogin(e){
-  e.preventDefault();
-  const u = document.getElementById("ad-user").value.trim();
-  const p = document.getElementById("ad-pass").value;
-  const errBox = document.getElementById("admin-login-error");
-  if(u==="admin" && p==="admin123"){
-    isAdmin = true;
-    currentUser = {name:"Admin", email:"admin@meridianfreight.com"};
-    setLoggedInNav();
-    document.getElementById("nav-dashboard-btn").onclick = ()=>showView("adminDashboard");
-    document.getElementById("nav-dashboard-btn").textContent = "Admin console";
-    errBox.classList.remove("show");
-    toast("Welcome back, Admin.", "success");
-    showView("adminDashboard");
-  } else {
-    showError(errBox, "Incorrect username or password.");
+    if(match){
+      isLoggedIn = true;
+      errorBox.classList.remove('show');
+      goTo('tracking');
+    } else {
+      errorBox.classList.add('show');
+    }
+    return false;
   }
-}
 
-/* =========================================================
-   CUSTOMER DASHBOARD
-========================================================= */
-function openAddShipment(){
-  const p = document.getElementById("add-shipment-panel");
-  p.style.display = p.style.display==="none" ? "block" : "none";
-}
-
-function handleAddToAccount(e){
-  e.preventDefault();
-  const code = document.getElementById("add-track-code").value.trim().toUpperCase();
-  const s = shipments.find(sh=>sh.code===code);
-  if(!s){ toast("No shipment found with that tracking number.", "error"); return; }
-  s.recipientEmail = currentUser.email;
-  document.getElementById("add-track-code").value = "";
-  toast("Shipment added to your account.", "success");
-  renderCustomerTable();
-}
-
-function renderCustomerTable(){
-  document.getElementById("cust-welcome").textContent = currentUser ? (currentUser.name.split(" ")[0] + "'s shipments") : "Your shipments";
-  const search = (document.getElementById("cust-search").value||"").toLowerCase();
-  const filter = document.getElementById("cust-filter").value;
-  const mount = document.getElementById("cust-table-mount");
-
-  let list = shipments.filter(s => currentUser && s.recipientEmail===currentUser.email);
-  if(filter!=="all") list = list.filter(s=>s.status===filter);
-  if(search) list = list.filter(s=> s.code.toLowerCase().includes(search) || s.destination.toLowerCase().includes(search));
-
-  if(list.length===0){
-    mount.innerHTML = `<div class="empty-state"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="7" width="18" height="13" rx="2" stroke-width="1.6"/><path d="M3 7l9-4 9 4" stroke-width="1.6"/></svg><div>No shipments on your account yet. Add one using its tracking number above.</div></div>`;
-    return;
+  function signOut(){
+    isLoggedIn = false;
+    document.getElementById('signinForm').reset();
+    document.getElementById('authError').classList.remove('show');
+    goTo('signin');
   }
-  mount.innerHTML = `
-    <table>
-      <thead><tr><th>Tracking #</th><th>Route</th><th>Service</th><th>Status</th><th>ETA</th><th></th></tr></thead>
-      <tbody>
-        ${list.map(s=>`
-          <tr>
-            <td class="mono-cell">${escapeHtml(s.code)}</td>
-            <td>${escapeHtml(s.origin)} → ${escapeHtml(s.destination)}</td>
-            <td>${escapeHtml(s.service)}</td>
-            <td><span class="status-pill ${statusPillClass(s.status)}"><span class="dot"></span>${escapeHtml(s.status)}</span></td>
-            <td>${s.status==="Delivered"?"—":formatDate(s.eta)}</td>
-            <td><button class="btn-xs" onclick="trackFromDashboard('${s.code}')">View details</button></td>
-          </tr>`).join("")}
-      </tbody>
-    </table>`;
-}
 
-function trackFromDashboard(code){
-  showView("home");
-  document.getElementById("track-input").value = code;
-  document.getElementById("result-section").style.display="block";
-  document.getElementById("result-mount").innerHTML = renderResultCard(shipments.find(s=>s.code===code));
-  setTimeout(()=>document.getElementById("result-section").scrollIntoView({behavior:"smooth"}), 60);
-}
-
-/* =========================================================
-   ADMIN DASHBOARD
-========================================================= */
-function switchAdminTab(tab, btn){
-  document.querySelectorAll(".tab-pane").forEach(p=>p.classList.remove("active"));
-  document.getElementById("admin-tab-"+tab).classList.add("active");
-  document.querySelectorAll(".tab-btn").forEach(b=>b.classList.remove("active"));
-  btn.classList.add("active");
-  if(tab==="users") renderAdminUsers();
-  if(tab==="shipments") renderAdminTable();
-}
-
-function renderAdminAll(){
-  renderAdminStats();
-  renderAdminTable();
-  renderAdminUsers();
-}
-
-function renderAdminStats(){
-  const total = shipments.length;
-  const transit = shipments.filter(s=>s.status==="In Transit"||s.status==="Out for Delivery").length;
-  const delivered = shipments.filter(s=>s.status==="Delivered").length;
-  const exceptions = shipments.filter(s=>s.status==="Exception").length;
-  document.getElementById("admin-stats").innerHTML = `
-    <div class="stat-card"><span>Total shipments</span><b>${total}</b></div>
-    <div class="stat-card"><span>In transit</span><b>${transit}</b></div>
-    <div class="stat-card"><span>Delivered</span><b>${delivered}</b></div>
-    <div class="stat-card"><span>Exceptions</span><b>${exceptions}</b></div>
-  `;
-}
-
-function renderAdminTable(){
-  const search = (document.getElementById("admin-search").value||"").toLowerCase();
-  const filter = document.getElementById("admin-filter").value;
-  let list = shipments.slice();
-  if(filter!=="all") list = list.filter(s=>s.status===filter);
-  if(search) list = list.filter(s=>
-    s.code.toLowerCase().includes(search) ||
-    s.recipient.toLowerCase().includes(search) ||
-    s.sender.toLowerCase().includes(search) ||
-    s.destination.toLowerCase().includes(search));
-
-  const mount = document.getElementById("admin-table-mount");
-  if(list.length===0){
-    mount.innerHTML = `<div class="empty-state"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="7" width="18" height="13" rx="2" stroke-width="1.6"/><path d="M3 7l9-4 9 4" stroke-width="1.6"/></svg><div>No shipments match your search.</div></div>`;
-    return;
+  function renderNav(){
+    const area = document.getElementById('navAuthArea');
+    if(isLoggedIn){
+      area.innerHTML = '<div class="nav-cta" onclick="goTo(\'tracking\')">View Tracking</div>';
+    } else {
+      area.innerHTML = '<div class="nav-cta ghost" onclick="goTo(\'signin\')">Sign In</div>';
+    }
   }
-  mount.innerHTML = `
-    <table>
-      <thead><tr><th>Tracking #</th><th>Sender → Recipient</th><th>Route</th><th>Status</th><th>ETA</th><th>Actions</th></tr></thead>
-      <tbody>
-        ${list.map(s=>`
-          <tr>
-            <td class="mono-cell">${escapeHtml(s.code)}</td>
-            <td>${escapeHtml(s.sender)} → ${escapeHtml(s.recipient)}</td>
-            <td>${escapeHtml(s.origin)} → ${escapeHtml(s.destination)}</td>
-            <td><span class="status-pill ${statusPillClass(s.status)}"><span class="dot"></span>${escapeHtml(s.status)}</span></td>
-            <td>${s.status==="Delivered"?"—":formatDate(s.eta)}</td>
-            <td class="row-actions">
-              <button class="btn-xs" onclick="openStatusModal('${s.code}')">Update</button>
-              <button class="btn-xs danger" onclick="deleteShipment('${s.code}')">Delete</button>
-            </td>
-          </tr>`).join("")}
-      </tbody>
-    </table>`;
-}
 
-function renderAdminUsers(){
-  const mount = document.getElementById("admin-users-mount");
-  if(users.length===0){
-    mount.innerHTML = `<div class="empty-state">No customers have signed up yet.</div>`;
-    return;
-  }
-  mount.innerHTML = `
-    <table>
-      <thead><tr><th>Name</th><th>Email</th><th>Shipments on account</th><th>Role</th></tr></thead>
-      <tbody>
-        ${users.map(u=>`
-          <tr>
-            <td>${escapeHtml(u.name)}</td>
-            <td>${escapeHtml(u.email)}</td>
-            <td>${shipments.filter(s=>s.recipientEmail===u.email).length}</td>
-            <td><span class="badge-role customer">Customer</span></td>
-          </tr>`).join("")}
-      </tbody>
-    </table>`;
-}
-
-/* ---- create shipment ---- */
-function genTrackingCode(){
-  let code;
-  do{
-    code = "MF" + Math.floor(10000000 + Math.random()*89999999);
-  } while(shipments.find(s=>s.code===code));
-  return code;
-}
-
-function handleCreateShipment(e){
-  e.preventDefault();
-  const sender = document.getElementById("cs-sender").value.trim();
-  const recipient = document.getElementById("cs-recipient").value.trim();
-  const recipientEmail = document.getElementById("cs-recipient-email").value.trim().toLowerCase();
-  const origin = document.getElementById("cs-origin").value.trim();
-  const destination = document.getElementById("cs-destination").value.trim();
-  const weight = parseFloat(document.getElementById("cs-weight").value);
-  const service = document.getElementById("cs-service").value;
-  const eta = document.getElementById("cs-eta").value;
-
-  const code = genTrackingCode();
-  shipments.unshift({
-    code, sender, recipient, recipientEmail: recipientEmail||null,
-    origin, destination, weight, service, status:"Created", eta,
-    history:[{status:"Created", location:origin, note:"Shipment created and label printed.", time:"Just now"}]
-  });
-
-  document.getElementById("cs-generated-code").textContent = code;
-  document.getElementById("cs-result-panel").style.display="block";
-  e.target.reset();
-  renderAdminStats();
-  toast("Shipment "+code+" created.", "success");
-}
-
-/* ---- update / delete ---- */
-function openStatusModal(code){
-  editingCode = code;
-  const s = shipments.find(sh=>sh.code===code);
-  document.getElementById("modal-status").value = s.status;
-  document.getElementById("modal-location").value = "";
-  document.getElementById("modal-note").value = "";
-  document.getElementById("modal-backdrop").style.display="flex";
-}
-function closeModal(){
-  document.getElementById("modal-backdrop").style.display="none";
-  editingCode = null;
-}
-function saveStatusUpdate(){
-  const s = shipments.find(sh=>sh.code===editingCode);
-  if(!s) return closeModal();
-  const status = document.getElementById("modal-status").value;
-  const location = document.getElementById("modal-location").value.trim() || s.destination;
-  const note = document.getElementById("modal-note").value.trim() || `Status updated to ${status}.`;
-  s.status = status;
-  s.history.push({status, location, note, time:"Just now"});
-  closeModal();
-  renderAdminAll();
-  toast("Shipment "+s.code+" updated.", "success");
-}
-function deleteShipment(code){
-  if(!confirm("Delete shipment "+code+"? This can't be undone.")) return;
-  shipments = shipments.filter(s=>s.code!==code);
-  renderAdminAll();
-  toast("Shipment "+code+" deleted.");
-}
-
-/* =========================================================
-   INIT
-========================================================= */
-document.getElementById("admin-entry-btn").addEventListener("click", ()=>{
-  if(isAdmin){ showView("adminDashboard"); }
-});
+  renderNav();
 </script>
+
 </body>
 </html>
