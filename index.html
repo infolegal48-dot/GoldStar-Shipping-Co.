@@ -671,7 +671,217 @@
   }
   .signout-link:hover{color:var(--emerald);}
 
+  /* ---------- ASSET GALLERY ---------- */
+  .asset-grid{
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+  .asset-card{
+    background: var(--emerald-deep);
+    border: 1px solid var(--emerald-deep);
+    padding: 30px 26px 26px;
+    position:relative;
+    overflow:hidden;
+  }
+  .asset-card svg{
+    width:100%;
+    height:150px;
+    display:block;
+    margin-bottom:20px;
+  }
+  .asset-card h4{
+    font-family:'Fraunces', serif;
+    font-size:17px;
+    font-weight:600;
+    color: var(--ivory);
+    margin:0 0 8px;
+  }
+  .asset-card p{
+    font-size:13.5px;
+    line-height:1.6;
+    color: rgba(242,245,240,0.72);
+    margin:0;
+  }
+
+  /* ---------- INFO SECTIONS (Assaying / Melting / Packaging) ---------- */
+  .info-grid{
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap:1px;
+    background: var(--line);
+    border:1px solid var(--line);
+  }
+  .info-card{
+    background: var(--ivory);
+    padding: 38px 32px;
+  }
+  .info-card .info-tag{
+    font-size:12px;
+    letter-spacing:1.6px;
+    text-transform:uppercase;
+    color: var(--gold);
+    font-weight:600;
+    margin-bottom:16px;
+    display:block;
+  }
+  .info-card h3{
+    font-size:19px;
+    margin-bottom:14px;
+  }
+  .info-card p{
+    font-size:14.5px;
+    line-height:1.7;
+    color: var(--ink-soft);
+    margin:0 0 10px;
+  }
+  .info-card ul{
+    margin:14px 0 0;
+    padding-left:18px;
+  }
+  .info-card li{
+    font-size:13.8px;
+    line-height:1.65;
+    color: var(--ink-soft);
+    margin-bottom:6px;
+  }
+
+  /* ---------- COMPLIANCE BANNER ---------- */
+  .compliance-banner{
+    display:flex;
+    align-items:center;
+    gap:18px;
+    background: var(--ivory-deep);
+    border:1px solid var(--line);
+    padding: 24px 32px;
+    margin-top:56px;
+  }
+  .compliance-banner svg{
+    width:30px; height:30px;
+    flex-shrink:0;
+  }
+  .compliance-banner p{
+    margin:0;
+    font-size:14px;
+    line-height:1.6;
+    color: var(--ink-soft);
+  }
+  .compliance-banner strong{
+    color: var(--emerald-deep);
+  }
+
+  /* ---------- FOOTER EMAIL ---------- */
+  .footer-contact-row.email span{
+    word-break: break-all;
+  }
+
+  /* ---------- SIGN UP BUTTON (nav) ---------- */
+  .nav-cta.solid-gold{
+    background: var(--gold);
+    border-color: var(--gold);
+    color: var(--ivory);
+  }
+  .nav-cta.solid-gold:hover{background:#8F6B24;}
+
+  /* ---------- SIGNUP MODAL ---------- */
+  .modal-overlay{
+    display:none;
+    position:fixed;
+    inset:0;
+    background: rgba(7,50,41,0.55);
+    z-index: 200;
+    align-items:center;
+    justify-content:center;
+    padding: 24px;
+  }
+  .modal-overlay.open{display:flex;}
+  .modal-card{
+    width:100%;
+    max-width: 460px;
+    max-height: 88vh;
+    overflow-y:auto;
+    background: var(--white);
+    border:1px solid var(--line);
+    padding: 42px 40px;
+    position:relative;
+  }
+  .modal-close{
+    position:absolute;
+    top:18px; right:18px;
+    width:30px; height:30px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    color: var(--ink-soft);
+    font-size:20px;
+    line-height:1;
+  }
+  .modal-close:hover{color:var(--emerald);}
+  .step-progress{
+    display:flex;
+    gap:8px;
+    margin-bottom:28px;
+  }
+  .step-dot{
+    flex:1;
+    height:3px;
+    background: var(--line);
+    border-radius:2px;
+  }
+  .step-dot.done{background: var(--emerald);}
+  .step-eyebrow{
+    font-size:12px;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    color: var(--gold);
+    font-weight:600;
+    margin-bottom:10px;
+  }
+  .modal-card h2{
+    font-size:23px;
+    margin-bottom:8px;
+  }
+  .modal-card > .step-desc{
+    font-size:13.5px;
+    color: var(--ink-soft);
+    margin: 0 0 26px;
+  }
+  .signup-step{display:none;}
+  .signup-step.active{display:block;}
+  .signup-error{
+    display:none;
+    font-size:13.5px;
+    color: var(--error);
+    background: rgba(162,58,47,0.08);
+    border:1px solid rgba(162,58,47,0.28);
+    padding:10px 12px;
+    margin-bottom:18px;
+  }
+  .signup-error.show{display:block;}
+  .step-actions{
+    display:flex;
+    justify-content:flex-end;
+    margin-top:10px;
+  }
+  .complete-icon{
+    width:50px; height:50px;
+    margin-bottom:20px;
+  }
+  .complete-hint{
+    background: var(--ivory-deep);
+    border:1px solid var(--line);
+    padding:16px 18px;
+    font-size:13.5px;
+    line-height:1.6;
+    color: var(--ink-soft);
+    margin-top:6px;
+  }
+
   @media (max-width: 880px){
+    .asset-grid{grid-template-columns:1fr;}
+    .info-grid{grid-template-columns:1fr;}
+    .compliance-banner{flex-direction:column; align-items:flex-start;}
     .hero{grid-template-columns:1fr; padding-top:56px;}
     .facet-wrap{order:-1; max-width:280px;}
     .feature-grid{grid-template-columns:1fr;}
@@ -679,6 +889,8 @@
     .track-panels{grid-template-columns:1fr;}
     .nav{padding:18px 22px;}
     .nav-links{display:none;}
+    #navAuthArea .nav-cta{padding:9px 14px; font-size:13px;}
+    .modal-card{padding:32px 24px;}
     .section{padding:56px 22px;}
     .hero{padding-left:22px; padding-right:22px;}
     .track-wrap{padding:40px 22px 60px;}
@@ -701,8 +913,9 @@
     <span onclick="scrollToFeatures()">Features</span>
     <span onclick="goTo('tracking')">Tracking</span>
   </div>
-  <div id="navAuthArea">
+  <div id="navAuthArea" style="display:flex; gap:12px; align-items:center;">
     <div class="nav-cta ghost" onclick="goTo('signin')">Sign In</div>
+    <div class="nav-cta solid-gold" onclick="openSignup()">Sign Up</div>
   </div>
 </div>
 
@@ -730,6 +943,66 @@
         <line x1="340" y1="110" x2="60" y2="290" stroke="#0B4B3E" stroke-width="0.7" stroke-opacity="0.4"/>
         <circle cx="200" cy="180" r="3" fill="#A87F2E"/>
       </svg>
+    </div>
+  </section>
+
+  <section class="section" style="border-top:none; padding-top:0;">
+    <div class="asset-grid">
+      <div class="asset-card">
+        <svg viewBox="0 0 200 150">
+          <defs>
+            <linearGradient id="barGrad1" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#E8C766"/>
+              <stop offset="45%" stop-color="#B8912E"/>
+              <stop offset="100%" stop-color="#F4E2A1"/>
+            </linearGradient>
+          </defs>
+          <polygon points="30,95 55,75 165,75 140,95" fill="#8F6B24"/>
+          <polygon points="140,95 165,75 165,45 140,65" fill="#8F6B24"/>
+          <polygon points="30,95 140,95 140,65 30,65" fill="url(#barGrad1)"/>
+          <polygon points="30,65 140,65 165,45 55,45" fill="#F6E8B8"/>
+          <line x1="42" y1="65" x2="42" y2="95" stroke="#8F6B24" stroke-width="0.7" opacity="0.5"/>
+          <line x1="128" y1="65" x2="128" y2="95" stroke="#8F6B24" stroke-width="0.7" opacity="0.5"/>
+          <text x="82" y="83" font-family="serif" font-size="9" fill="#5C4416" letter-spacing="2">999.9 FINE</text>
+        </svg>
+        <h4>Gold Bars</h4>
+        <p>Cast and minted bars handled under sealed, insured custody from vault to destination.</p>
+      </div>
+      <div class="asset-card">
+        <svg viewBox="0 0 200 150">
+          <defs>
+            <linearGradient id="barGrad2" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#F4E2A1"/>
+              <stop offset="50%" stop-color="#C9A040"/>
+              <stop offset="100%" stop-color="#8F6B24"/>
+            </linearGradient>
+          </defs>
+          <g transform="translate(0,8)">
+            <polygon points="20,100 45,82 45,60 20,78" fill="#8F6B24"/>
+            <polygon points="20,78 45,60 155,60 130,78" fill="#F6E8B8"/>
+            <polygon points="20,100 130,100 130,78 20,78" fill="url(#barGrad2)"/>
+          </g>
+          <g transform="translate(14,-10)">
+            <polygon points="20,100 45,82 45,60 20,78" fill="#8F6B24"/>
+            <polygon points="20,78 45,60 155,60 130,78" fill="#F6E8B8"/>
+            <polygon points="20,100 130,100 130,78 20,78" fill="url(#barGrad2)"/>
+          </g>
+        </svg>
+        <h4>Bullion Stacks</h4>
+        <p>Palletized bullion consignments moved with full chain-of-custody documentation.</p>
+      </div>
+      <div class="asset-card">
+        <svg viewBox="0 0 200 150">
+          <circle cx="60" cy="75" r="34" fill="#E8C766" stroke="#8F6B24" stroke-width="2"/>
+          <circle cx="60" cy="75" r="25" fill="none" stroke="#8F6B24" stroke-width="1"/>
+          <circle cx="120" cy="60" r="26" fill="none" stroke="#1B3A6B" stroke-width="1.6"/>
+          <polygon points="120,38 132,55 120,82 108,55" fill="#1B3A6B" fill-opacity="0.35" stroke="#1B3A6B" stroke-width="1"/>
+          <circle cx="150" cy="95" r="18" fill="none" stroke="#0B4B3E" stroke-width="1.6"/>
+          <polygon points="150,80 160,92 150,110 140,92" fill="#0B4B3E" fill-opacity="0.3" stroke="#0B4B3E" stroke-width="1"/>
+        </svg>
+        <h4>Other Value Metals &amp; Gemstones</h4>
+        <p>Silver, platinum, and cut gemstones — each catalogued and secured to the same standard.</p>
+      </div>
     </div>
   </section>
 
@@ -803,6 +1076,57 @@
     </div>
   </section>
 
+  <section class="section">
+    <div class="section-head">
+      <div>
+        <div class="section-eyebrow">How We Handle Your Assets</div>
+        <h2>Assaying, Melting &amp; Packaging</h2>
+      </div>
+      <p>A closer look at the processes behind every consignment we accept.</p>
+    </div>
+
+    <div class="info-grid">
+      <div class="info-card">
+        <span class="info-tag">Assaying</span>
+        <h3>Verifying Purity &amp; Weight</h3>
+        <p>Every shipment is assayed on intake to confirm purity, weight, and authenticity before it enters our custody chain.</p>
+        <ul>
+          <li>Independent lab verification of metal purity or gemstone grading</li>
+          <li>Certified weight and quality documentation issued to the client</li>
+          <li>Results recorded against the shipment before transport begins</li>
+        </ul>
+      </div>
+      <div class="info-card">
+        <span class="info-tag">Melting</span>
+        <h3>Controlled Processing</h3>
+        <p>Where melting or re-casting is requested, it is carried out in a controlled, monitored environment by qualified handlers.</p>
+        <ul>
+          <li>Supervised melting with continuous weight reconciliation</li>
+          <li>Re-casting into client-specified bar or ingot formats</li>
+          <li>Full handling log retained for every batch processed</li>
+        </ul>
+      </div>
+      <div class="info-card">
+        <span class="info-tag">Custom Packaging</span>
+        <h3>Options &amp; Benefits</h3>
+        <p>Packaging is tailored to the value and sensitivity of each shipment for maximum protection in transit.</p>
+        <ul>
+          <li>Tamper-evident sealing and reinforced casing options</li>
+          <li>Discreet, unmarked exterior packaging on request</li>
+          <li>Climate and impact protection for sensitive gemstones</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="compliance-banner">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#0B4B3E" stroke-width="1.5">
+        <path d="M12 2 L21 6 V12 C21 17 17 20.5 12 22 C7 20.5 3 17 3 12 V6 Z"/>
+        <path d="M8.5 12 L11 14.5 L15.5 9.5"/>
+      </svg>
+      <p><strong>Licensed &amp; Compliant.</strong> Meridian Vault Freight is licensed by the government to transport and handle precious metals and gemstones, and operates in accordance with all applicable regulatory requirements.</p>
+    </div>
+  </section>
+
   <section class="section" style="padding-top:0; border-top:none;">
     <div class="ratings-band">
       <div class="ratings-stars" aria-label="4.6 out of 5 stars">
@@ -832,6 +1156,10 @@
       <div class="footer-contact-row">
         <svg viewBox="0 0 24 24" fill="none" stroke="#0B4B3E" stroke-width="1.5"><path d="M12 21s7-6.5 7-11.5A7 7 0 1 0 5 9.5C5 14.5 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.4"/></svg>
         <span>East Legon, St. 43<br>Accra, Ghana</span>
+      </div>
+      <div class="footer-contact-row email">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#0B4B3E" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="1"/><path d="M3 6 L12 13 L21 6"/></svg>
+        <span>Team@meridianvaultfreight.org</span>
       </div>
     </div>
     <div class="footer-bottom">
@@ -936,6 +1264,100 @@
   </div>
 </div>
 
+<!-- ============ SIGN UP MODAL ============ -->
+<div class="modal-overlay" id="signupModal">
+  <div class="modal-card">
+    <div class="modal-close" onclick="closeSignup()">&times;</div>
+
+    <div class="step-progress">
+      <div class="step-dot done" id="dot-1"></div>
+      <div class="step-dot" id="dot-2"></div>
+      <div class="step-dot" id="dot-3"></div>
+      <div class="step-dot" id="dot-4"></div>
+    </div>
+
+    <!-- Step 1: Personal Names -->
+    <div class="signup-step active" id="signup-step-1">
+      <div class="step-eyebrow">Step 1 of 3</div>
+      <h2>Personal Names</h2>
+      <p class="step-desc">Let's start with your name as it should appear on your account.</p>
+      <div class="signup-error" id="error-step-1">Please fill in your first and last name.</div>
+      <div class="field">
+        <label for="su-first">First Name</label>
+        <input type="text" id="su-first" placeholder="First name">
+      </div>
+      <div class="field">
+        <label for="su-middle">Middle Name</label>
+        <input type="text" id="su-middle" placeholder="Middle name (optional)">
+      </div>
+      <div class="field">
+        <label for="su-last">Last Name</label>
+        <input type="text" id="su-last" placeholder="Last name">
+      </div>
+      <div class="step-actions">
+        <button type="button" class="btn-primary" onclick="goToSignupStep(2)">Continue</button>
+      </div>
+    </div>
+
+    <!-- Step 2: Location / Address -->
+    <div class="signup-step" id="signup-step-2">
+      <div class="step-eyebrow">Step 2 of 3</div>
+      <h2>Location &amp; Address</h2>
+      <p class="step-desc">Tell us where your account should be registered.</p>
+      <div class="signup-error" id="error-step-2">Please complete all address fields.</div>
+      <div class="field">
+        <label for="su-country">Country</label>
+        <input type="text" id="su-country" placeholder="Country">
+      </div>
+      <div class="field">
+        <label for="su-state">State / Province</label>
+        <input type="text" id="su-state" placeholder="State or province">
+      </div>
+      <div class="field">
+        <label for="su-street">Street Address</label>
+        <input type="text" id="su-street" placeholder="Street address">
+      </div>
+      <div class="step-actions">
+        <button type="button" class="btn-primary" onclick="goToSignupStep(3)">Continue</button>
+      </div>
+    </div>
+
+    <!-- Step 3: Password Setup -->
+    <div class="signup-step" id="signup-step-3">
+      <div class="step-eyebrow">Step 3 of 3</div>
+      <h2>Password Setup</h2>
+      <p class="step-desc">Create a password to secure your account.</p>
+      <div class="signup-error" id="error-step-3">Passwords do not match. Please try again.</div>
+      <div class="field">
+        <label for="su-pass">Create Password</label>
+        <input type="password" id="su-pass" placeholder="Create password">
+      </div>
+      <div class="field">
+        <label for="su-pass-confirm">Confirm Password</label>
+        <input type="password" id="su-pass-confirm" placeholder="Confirm password">
+      </div>
+      <div class="step-actions">
+        <button type="button" class="btn-primary" onclick="goToSignupStep(4)">Continue</button>
+      </div>
+    </div>
+
+    <!-- Completion Step -->
+    <div class="signup-step" id="signup-step-4">
+      <svg class="complete-icon" viewBox="0 0 24 24" fill="none" stroke="#0B4B3E" stroke-width="1.5">
+        <circle cx="12" cy="12" r="10"/>
+        <path d="M8 12.5 L11 15.5 L16 9"/>
+      </svg>
+      <h2>Almost There</h2>
+      <p class="step-desc">Your account details have been collected.</p>
+      <div class="complete-hint">To finalize your account creation, please contact our support team at <strong>Team@meridianvaultfreight.org</strong> or call <strong>+233 505 224 268</strong>.</div>
+      <div class="step-actions">
+        <button type="button" class="btn-primary" onclick="closeSignup()">Done</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
 <script>
   // ---- test credentials (client-side demo only) ----
   const VALID_USERS = [
@@ -983,6 +1405,66 @@
     document.getElementById('signinForm').reset();
     document.getElementById('authError').classList.remove('show');
     goTo('signin');
+  }
+
+  // ---- Sign Up multi-step flow ----
+  function openSignup(){
+    document.getElementById('signupModal').classList.add('open');
+    resetSignupToStep1();
+  }
+
+  function closeSignup(){
+    document.getElementById('signupModal').classList.remove('open');
+  }
+
+  function resetSignupToStep1(){
+    document.querySelectorAll('.signup-step').forEach(s => s.classList.remove('active'));
+    document.getElementById('signup-step-1').classList.add('active');
+    document.querySelectorAll('.step-dot').forEach((d,i) => {
+      d.classList.toggle('done', i === 0);
+    });
+    document.querySelectorAll('.signup-error').forEach(e => e.classList.remove('show'));
+  }
+
+  function goToSignupStep(step){
+    // validate current step before advancing
+    if(step === 2){
+      const first = document.getElementById('su-first').value.trim();
+      const last = document.getElementById('su-last').value.trim();
+      const err = document.getElementById('error-step-1');
+      if(!first || !last){
+        err.classList.add('show');
+        return;
+      }
+      err.classList.remove('show');
+    }
+    if(step === 3){
+      const country = document.getElementById('su-country').value.trim();
+      const state = document.getElementById('su-state').value.trim();
+      const street = document.getElementById('su-street').value.trim();
+      const err = document.getElementById('error-step-2');
+      if(!country || !state || !street){
+        err.classList.add('show');
+        return;
+      }
+      err.classList.remove('show');
+    }
+    if(step === 4){
+      const pass = document.getElementById('su-pass').value;
+      const confirm = document.getElementById('su-pass-confirm').value;
+      const err = document.getElementById('error-step-3');
+      if(!pass || pass !== confirm){
+        err.classList.add('show');
+        return;
+      }
+      err.classList.remove('show');
+    }
+
+    document.querySelectorAll('.signup-step').forEach(s => s.classList.remove('active'));
+    document.getElementById('signup-step-' + step).classList.add('active');
+    document.querySelectorAll('.step-dot').forEach((d,i) => {
+      d.classList.toggle('done', i < step);
+    });
   }
 
   function renderNav(){
