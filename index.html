@@ -585,6 +585,7 @@
     display:flex;
     justify-content:space-between;
     align-items:baseline;
+    gap:24px;
     padding: 13px 0;
     border-bottom: 1px solid var(--line);
   }
@@ -592,12 +593,19 @@
   .kv-key{
     font-size:14px;
     color: var(--ink-soft);
+    flex-shrink:0;
   }
   .kv-val{
     font-size:14.5px;
     font-weight:600;
     color: var(--emerald-deep);
     text-align:right;
+    line-height:1.5;
+  }
+  .kv-val.mono{
+    font-family:'JetBrains Mono', monospace;
+    font-weight:500;
+    letter-spacing:0.5px;
   }
 
   .journey{
@@ -1220,8 +1228,16 @@
       </div>
       <div class="panel">
         <h3>Sender Details</h3>
+        <div class="kv-row"><span class="kv-key">Sender Name</span><span class="kv-val">Asamoah Cindy</span></div>
         <div class="kv-row"><span class="kv-key">Sender Address</span><span class="kv-val">Accra, Ghana</span></div>
       </div>
+    </div>
+
+    <div class="panel" style="margin-top:1px; border:1px solid var(--line);">
+      <h3>Receiver Details</h3>
+      <div class="kv-row"><span class="kv-key">Receiver Name</span><span class="kv-val">Syndication Group Investment &amp; Holding LLC / Caleb C. Jones</span></div>
+      <div class="kv-row"><span class="kv-key">Receiver Address</span><span class="kv-val">3601 North Market Street<br>Wilmington, DE 19802</span></div>
+      <div class="kv-row"><span class="kv-key">Account Number</span><span class="kv-val mono">309721</span></div>
     </div>
 
     <div class="track-actions">
